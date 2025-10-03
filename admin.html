@@ -218,10 +218,22 @@
                 const requestElement = document.createElement('div');
                 requestElement.className = 'request-item';
                 
+                // Converti lo stato in italiano
+                let statoIta = '';
+                if(request.status === 'approved') {
+                    statoIta = 'Approvata';
+                } else if(request.status === 'rejected') {
+                    statoIta = 'Rifiutata';
+                } else if(request.status === 'pending') {
+                    statoIta = 'In attesa di risposta';
+                } else {
+                    statoIta = request.status ? request.status.charAt(0).toUpperCase() + request.status.slice(1) : 'In attesa di revisione';
+                }
+                
                 requestElement.innerHTML = `
                     <div class="request-header">
                         <h4>Richiesta per ID: ${request.discordId}</h4>
-                        <div class="request-status">${request.status ? request.status.charAt(0).toUpperCase() + request.status.slice(1) : 'In attesa'}</div>
+                        <div class="request-status">${statoIta}</div>
                     </div>
                     <div class="request-content">
                         <p><strong>Nome Discord:</strong> ${request.discordName}</p>

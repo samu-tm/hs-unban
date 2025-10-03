@@ -1497,6 +1497,43 @@ button:active {
         font-size: 1.5rem;
     }
     
+    /* Ottimizzazione per la pagina admin su mobile */
+    .request-item {
+        padding: 15px; /* Ridotto per mobile */
+        margin-bottom: 12px; /* Leggermente ridotto */
+    }
+    
+    .request-header {
+        flex-direction: column; /* Stacco verticale per mobile */
+        align-items: flex-start; /* Allineamento a sinistra */
+        gap: 8px; /* Spazio tra elementi */
+    }
+    
+    .request-status {
+        align-self: flex-end; /* Allineamento a destra per lo stato */
+    }
+    
+    .request-content p {
+        font-size: 0.95rem; /* Leggermente aumentato per leggibilità */
+        margin: 6px 0; /* Ridotto */
+        padding: 5px 0; /* Ridotto */
+    }
+    
+    .request-actions {
+        flex-direction: column; /* Pulsanti in colonna */
+        align-items: center; /* Centrati */
+        gap: 8px; /* Spazio tra pulsanti */
+    }
+    
+    .action-btn {
+        width: 100%; /* Pulsanti a tutta larghezza */
+        max-width: 250px; /* Larghezza massima */
+    }
+    
+    .admin-action textarea {
+        min-height: 70px; /* Ridotto per mobile */
+    }
+    
     .form-group label {
         font-size: 0.95rem;
     }
@@ -1521,6 +1558,27 @@ button:active {
     
     .form-summary p {
         font-size: 0.9rem;
+    }
+    
+    /* Ottimizzazione specifica per la pagina admin su schermi molto piccoli */
+    .request-item {
+        padding: 12px; /* Ridotto ulteriormente */
+        margin-bottom: 10px; /* Ridotto ulteriormente */
+    }
+    
+    .request-content p {
+        font-size: 0.9rem; /* Leggermente ridotto per schermi molto piccoli */
+        margin: 5px 0; /* Ridotto ulteriormente */
+    }
+    
+    .action-btn {
+        max-width: 220px; /* Ridotto per schermi molto piccoli */
+        padding: 7px 12px; /* Ridotto */
+        font-size: 0.85rem; /* Leggermente ridotto */
+    }
+    
+    .admin-action textarea {
+        min-height: 60px; /* Ridotto per schermi molto piccoli */
     }
     
     button,
