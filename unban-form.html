@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Richiesta Unban - Server Discord Hashira</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Particelle di sfondo -->
+    <div id="particles-js"></div>
+
+    <!-- Wrapper principale -->
+    <div class="main-content">
+        <!-- Header Fisso -->
+        <header class="header">
+            <div>
+                <div class="logo">Hashira</div>
+            </div>
+            <div>
+                <button class="home-btn" onclick="location.href='home.html'">home</button>
+                <button class="regolamento-btn" onclick="location.href='regolamento.html'">regolamento</button>
+                <button class="info-btn" onclick="location.href='info.html'">info</button>
+            </div>
+        </header>
+
+        <div class="container">
+            <main>
+                <section class="unban-form-section">
+                    <h2>Modulo Richiesta Unban</h2>
+                    <p>Compila il modulo qui sotto per richiedere l'unban dal server Discord Hashira.</p>
+                    
+                    <form id="unbanForm" action="#" method="POST">
+                        <div class="form-group">
+                            <label for="discordName">Nome Discord:</label>
+                            <input type="text" id="discordName" name="discordName" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="discordUsername">Username Discord:</label>
+                            <input type="text" id="discordUsername" name="discordUsername" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="discordId">ID Discord:</label>
+                            <input type="text" id="discordId" name="discordId" required placeholder="Inserisci il tuo ID (17-20 cifre)">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="banReason">Perché sei stato bannato dal server:</label>
+                            <textarea id="banReason" name="banReason" rows="4" required placeholder="Spiega dettagliatamente le ragioni del tuo ban..."></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="unbanReason">Perché vuoi essere unbannato e tornare nel server:</label>
+                            <textarea id="unbanReason" name="unbanReason" rows="4" required placeholder="Spiega perché desideri tornare nel server e come intendi comportarti in futuro..."></textarea>
+                        </div>
+                        
+                        <div class="captcha-section">
+                            <h3>Verifica Anti-Bot</h3>
+                            <p>Per confermare che sei un utente umano, riconosci il testo nell'immagine sottostante:</p>
+                            
+                            <div class="captcha-question">
+                                <div class="text-captcha-container">
+                                    <canvas id="textCaptcha" width="200" height="60"></canvas>
+                                    <input type="text" id="textCaptchaInput" name="textCaptchaInput" required placeholder="Inserisci il testo mostrato nell'immagine">
+                                    <input type="hidden" id="correctTextCaptcha" name="correctTextCaptcha">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="warning">
+                            <p><strong>Questa NON è una domanda. Sei pregato di mettere le informazioni reali, se no la richiesta viene eliminata automaticamente dal bot.</strong></p>
+                        </div>
+                        
+                        <button type="submit">Invia Richiesta</button>
+                    </form>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© Server Discord Hashira — Tutti i diritti riservati.</p>
+        <p>Sito e bot sviluppati da Samu™</p>
+    </footer>
+
+    <!-- Script per particelle -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // Inizializzazione di Particles.js
+        particlesJS("particles-js", {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: "#8e2de2" },
+                shape: { type: "circle" },
+                opacity: { value: 0.5, random: true },
+                size: { value: 3, random: true },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: "#4a00e0",
+                    opacity: 0.4,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 2,
+                    direction: "none",
+                    random: true,
+                    straight: false,
+                    out_mode: "out",
+                    bounce: false
+                }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: { enable: true, mode: "grab" },
+                    onclick: { enable: true, mode: "push" },
+                    resize: true
+                }
+            },
+            retina_detect: true
+        });
+        
+        // Funzione per salvare temporaneamente il modulo
+        function saveFormData() {
+            const formData = {
+                discordName: document.getElementById('discordName')?.value || '',
+                discordUsername: document.getElementById('discordUsername')?.value || '',
+                discordId: document.getElementById('discordId')?.value || '',
+                banReason: document.getElementById('banReason')?.value || '',
+                unbanReason: document.getElementById('unbanReason')?.value || ''
+            };
+            
+            localStorage.setItem('unbanFormDraft', JSON.stringify(formData));
+        }
+        
+        // Funzione per caricare il modulo salvato
+        function loadFormData() {
+            const savedData = JSON.parse(localStorage.getItem('unbanFormDraft'));
+            if (savedData) {
+                document.getElementById('discordName').value = savedData.discordName;
+                document.getElementById('discordUsername').value = savedData.discordUsername;
+                document.getElementById('discordId').value = savedData.discordId;
+                document.getElementById('banReason').value = savedData.banReason;
+                document.getElementById('unbanReason').value = savedData.unbanReason;
+            }
+        }
+        
+        // Salva i dati ogni 30 secondi quando l'utente sta modificando il modulo
+        setInterval(() => {
+            if (document.getElementById('unbanForm')) {
+                saveFormData();
+            }
+        }, 30000);
+        
+        // Carica i dati quando la pagina è caricata
+        document.addEventListener('DOMContentLoaded', function() {
+            loadFormData();
+        });
+        
+        // Mostra animazione di caricamento durante l'invio
+        function showLoadingAnimation() {
+            const submitButton = document.querySelector('button[type="submit"]');
+            submitButton.innerHTML = '<span class="loading-spinner"></span> Invio in corso...';
+            submitButton.disabled = true;
+            submitButton.style.opacity = '0.7';
+        }
+        
+        function hideLoadingAnimation() {
+            const submitButton = document.querySelector('button[type="submit"]');
+            submitButton.innerHTML = 'Invia Richiesta';
+            submitButton.disabled = false;
+            submitButton.style.opacity = '1';
+        }
+    </script>
+    <script src="unban-script.js"></script>
+</body>
+</html>

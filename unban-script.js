@@ -1,0 +1,219 @@
+document.addEventListener('DOMContentLoaded', function() {
+    // Controlla il rate limiting
+    function checkRateLimit() {
+        const lastSubmission = localStorage.getItem('lastUnbanSubmission');
+        const now = new Date().getTime();
+        
+        // Limite di 1 richiesta ogni 30 minuti (1800000 ms)
+        if (lastSubmission && (now - parseInt(lastSubmission)) < 1800000) {
+            const remainingTime = Math.ceil((1800000 - (now - parseInt(lastSubmission))) / 60000);
+            alert(`Puoi inviare una nuova richiesta tra ${remainingTime} minuti. Evita di inviare richieste ripetute.`);
+            return false;
+        }
+        return true;
+    }
+    
+    // Genera testo casuale per la verifica visiva
+    function generateTextCaptcha() {
+        const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+        let captcha = '';
+        
+        // Genera una stringa casuale di 5-6 caratteri
+        const length = Math.floor(Math.random() * 2) + 5; // 5 o 6 caratteri
+        for (let i = 0; i < length; i++) {
+            captcha += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        
+        document.getElementById('correctTextCaptcha').value = captcha;
+        
+        // Disegna il testo sul canvas con effetti visivi
+        const canvas = document.getElementById('textCaptcha');
+        const ctx = canvas.getContext('2d');
+        
+        // Sfondo con colore casuale
+        const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+        gradient.addColorStop(0, `hsl(${Math.random() * 360}, 50%, 80%)`);
+        gradient.addColorStop(1, `hsl(${Math.random() * 360}, 50%, 80%)`);
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // Linee di disturbo
+        ctx.strokeStyle = `hsl(${Math.random() * 360}, 70%, 50%)`;
+        ctx.lineWidth = 1;
+        for (let i = 0; i < 8; i++) {
+            ctx.beginPath();
+            ctx.moveTo(Math.random() * canvas.width, Math.random() * canvas.height);
+            ctx.lineTo(Math.random() * canvas.width, Math.random() * canvas.height);
+            ctx.stroke();
+        }
+        
+        // Cerchi di disturbo
+        ctx.strokeStyle = `hsl(${Math.random() * 360}, 70%, 50%)`;
+        for (let i = 0; i < 5; i++) {
+            ctx.beginPath();
+            ctx.arc(
+                Math.random() * canvas.width, 
+                Math.random() * canvas.height, 
+                Math.random() * 10 + 5, 
+                0, 
+                Math.PI * 2
+            );
+            ctx.stroke();
+        }
+        
+        // Testo distorto
+        for (let i = 0; i < captcha.length; i++) {
+            ctx.save();
+            ctx.translate(20 + i * 30, canvas.height / 2);
+            
+            // Rotazione e scala casuali per ogni carattere
+            const angle = (Math.random() - 0.5) * 0.6; // -0.3 a 0.3 radianti
+            const scaleX = 0.8 + Math.random() * 0.4; // 0.8 a 1.2
+            const scaleY = 0.8 + Math.random() * 0.4; // 0.8 a 1.2
+            
+            ctx.transform(scaleX, 0, 0, scaleY, 0, 0);
+            ctx.rotate(angle);
+            
+            // Colore casuale per ogni carattere
+            ctx.fillStyle = `hsl(${Math.random() * 360}, 70%, 40%)`;
+            ctx.font = `bold ${20 + Math.random() * 10}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            
+            ctx.fillText(captcha[i], 0, 0);
+            ctx.restore();
+        }
+        
+        // Resetta il campo della risposta
+        document.getElementById('textCaptchaInput').value = '';
+    }
+    
+    // Inizializza la verifica quando la pagina viene caricata
+    generateTextCaptcha();
+    
+    // Aggiungi evento per rigenerare il CAPTCHA quando si clicca sull'immagine
+    document.getElementById('textCaptcha').addEventListener('click', generateTextCaptcha);
+    
+    const form = document.getElementById('unbanForm');
+    
+    form.addEventListener('submit', function(e) {
+        e.preventDefault(); // Previene l'invio normale del modulo
+        
+        // Ottieni i valori dei campi
+        const discordName = document.getElementById('discordName').value.trim();
+        const discordUsername = document.getElementById('discordUsername').value.trim();
+        const discordId = document.getElementById('discordId').value.trim();
+        const banReason = document.getElementById('banReason').value.trim();
+        const unbanReason = document.getElementById('unbanReason').value.trim();
+        const textCaptchaInput = document.getElementById('textCaptchaInput').value.trim();
+        const correctTextCaptcha = document.getElementById('correctTextCaptcha').value;
+        
+        // Controllo se l'utente ha già inviato una richiesta
+        const existingRequest = localStorage.getItem('unbanRequest_' + discordId);
+        
+        if (existingRequest) {
+            const request = JSON.parse(existingRequest);
+            if (request.status !== 'rejected') {
+                alert('Hai già inviato una richiesta di unban. Attendi la risposta entro 24 ore. Puoi controllare lo stato della tua richiesta nella pagina "Controlla Stato Richiesta".');
+                generateTextCaptcha(); // Rigenera il CAPTCHA per sicurezza
+                hideLoadingAnimation(); // Assicura che l'animazione di caricamento sia nascosta
+                return;
+            }
+        }
+        
+        // Controllo rate limiting
+        if (!checkRateLimit()) {
+            return;
+        }
+        
+        // Mostra animazione di caricamento
+        showLoadingAnimation();
+        
+        // Validazione dei campi
+        if (!discordName || !discordUsername || !discordId || !banReason || !unbanReason || !textCaptchaInput) {
+            alert('Per favore compila tutti i campi obbligatori.');
+            generateTextCaptcha(); // Rigenera il CAPTCHA
+            hideLoadingAnimation();
+            return;
+        }
+        
+        // Controllo che l'ID Discord contenga tra 17 e 20 cifre numeriche
+        if (!/^\d{17,20}$/.test(discordId)) {
+            alert('Richiesta non valida. La richiesta verrà eliminata automaticamente.');
+            generateTextCaptcha(); // Rigenera il CAPTCHA
+            hideLoadingAnimation();
+            return;
+        }
+        
+        // Verifica la risposta del CAPTCHA
+        if (textCaptchaInput.toUpperCase() !== correctTextCaptcha) {
+            alert('Testo anti-bot errato. Riprova.');
+            generateTextCaptcha(); // Rigenera il CAPTCHA
+            hideLoadingAnimation();
+            return;
+        }
+        
+        // Crea il payload per il webhook Discord
+        const webhookData = {
+            embeds: [{
+                title: 'Nuova Richiesta Unban',
+                fields: [
+                    { name: 'Nome Discord', value: discordName, inline: true },
+                    { name: 'Username Discord', value: discordUsername, inline: true },
+                    { name: 'ID Discord', value: discordId, inline: true },
+                    { name: 'Perché sei stato bannato', value: banReason },
+                    { name: 'Perché vuoi essere unbannato', value: unbanReason }
+                ],
+                footer: { text: `ID Utente: ${discordId}` },
+                timestamp: new Date().toISOString(),
+                color: 0x00ff00
+            }]
+        };
+        
+        // Salva i dati della richiesta in localStorage per lo stato (usando l'ID Discord come chiave)
+        const requestInfo = {
+            discordName: discordName,
+            discordUsername: discordUsername,
+            discordId: discordId,
+            banReason: banReason,
+            unbanReason: unbanReason,
+            timestamp: new Date().toISOString(),
+            status: 'pending', // Cambiato da 'submitted' a 'pending' per coerenza
+            adminNote: '' // Inizializza come stringa vuota
+        };
+        
+        localStorage.setItem('unbanRequest_' + discordId, JSON.stringify(requestInfo));
+        
+        // Registra l'invio per il rate limiting
+        localStorage.setItem('lastUnbanSubmission', new Date().getTime().toString());
+        
+        // Cancella la bozza del modulo
+        localStorage.removeItem('unbanFormDraft');
+        
+        // Invia i dati al webhook Discord
+        fetch('https://discord.com/api/webhooks/1423649018898022544/-wZP32iCsvIho2_Joi7LR9d6FCPW_KtPQZFcasU-JSOujBAnFN8nGX0WlFlW8Pa4deVW', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(webhookData)
+        })
+        .then(response => {
+            if (response.ok) {
+                // Reindirizzamento alla pagina di conferma
+                localStorage.setItem('requestCode', discordId);
+                window.location.href = 'confirmation.html';
+            } else {
+                alert('Errore durante l\'invio della richiesta. Riprova più tardi.');
+                generateTextCaptcha(); // Rigenera il CAPTCHA
+                hideLoadingAnimation();
+            }
+        })
+        .catch(error => {
+            console.error('Errore:', error);
+            alert('Si è verificato un errore durante l\'invio della richiesta.');
+            generateTextCaptcha(); // Rigenera il CAPTCHA
+            hideLoadingAnimation();
+        });
+    });
+});

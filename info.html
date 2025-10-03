@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informazioni - Server Discord Hashira</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Particelle di sfondo -->
+    <div id="particles-js"></div>
+
+    <!-- Wrapper principale -->
+    <div class="main-content">
+        <!-- Header Fisso -->
+        <header class="header">
+            <div>
+                <div class="logo">Hashira</div>
+            </div>
+            <div>
+                <button class="home-btn" onclick="location.href='home.html'">home</button>
+                <button class="regolamento-btn" onclick="location.href='regolamento.html'">regolamento</button>
+                <button class="info-btn" onclick="location.href='info.html'">info</button>
+            </div>
+        </header>
+
+        <div class="container">
+            <main>
+                <section class="info-section">
+                    <h2>Informazioni sul Sito</h2>
+                    
+                    <div class="info-content">
+                        <h3>Scopo del Sito</h3>
+                        <p>Questo sito è stato creato per permettere agli utenti bannati dal server Discord Hashira di richiedere formalmente l'unban. Il sistema automatizzato consente di inviare richieste in modo strutturato, facilitando il processo di revisione da parte dei moderatori.</p>
+                        
+                        <h3>Perché sono stato bannato?</h3>
+                        <p>I ban sul server Discord Hashira avvengono generalmente per uno o più dei seguenti motivi:</p>
+                        <ul>
+                            <li>Violazione delle regole del server</li>
+                            <li>Comportamento tossico o offensivo</li>
+                            <li>Spam o pubblicità non richiesta</li>
+                            <li>Contenuti inappropriati</li>
+                            <li>Insulti o molestie verso altri membri</li>
+                            <li>Ruoli o nomi utente inappropriati</li>
+                        </ul>
+                        
+                        <h3>Come posso richiedere l'unban?</h3>
+                        <p>Se sei stato bannato e ritieni che il ban sia stato ingiusto o che tu abbia capito i tuoi errori, puoi:</p>
+                        <ol>
+                            <li>Compilare il modulo di richiesta unban con informazioni sincere e dettagliate</li>
+                            <li>Spiegare chiaramente perché sei stato bannato (secondo la tua comprensione)</li>
+                            <li>Spiegare perché desideri tornare nel server e come ti impegnerai a rispettare le regole in futuro</li>
+                            <li>Attendere la risposta da parte del team di moderazione (entro 24 ore)</li>
+                        </ol>
+                        
+                        <h3>Quando posso richiedere l'unban?</h3>
+                        <p>Puoi richiedere l'unban una volta ogni 30 giorni. Se la tua richiesta viene rifiutata, dovrai attendere 30 giorni prima di poterne inviare un'altra.</p>
+                        
+                        <h3>Suggerimenti per una buona richiesta di unban</h3>
+                        <ul>
+                            <li>Sii onesto e sincero</li>
+                            <li>Mostra di aver capito gli errori commessi</li>
+                            <li>Evita atteggiamenti di sfida o richieste ripetitive</li>
+                            <li>Fornisci informazioni specifiche e dettagliate</li>
+                            <li>Dimostra come cambierai comportamento in futuro</li>
+                        </ul>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© Server Discord Hashira — Tutti i diritti riservati.</p>
+        <p>Sito e bot sviluppati da Samu™</p>
+    </footer>
+
+    <!-- Script per particelle -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // Inizializzazione di Particles.js
+        particlesJS("particles-js", {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: "#8e2de2" },
+                shape: { type: "circle" },
+                opacity: { value: 0.5, random: true },
+                size: { value: 3, random: true },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: "#4a00e0",
+                    opacity: 0.4,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 2,
+                    direction: "none",
+                    random: true,
+                    straight: false,
+                    out_mode: "out",
+                    bounce: false
+                }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: { enable: true, mode: "grab" },
+                    onclick: { enable: true, mode: "push" },
+                    resize: true
+                }
+            },
+            retina_detect: true
+        });
+    </script>
+</body>
+</html>

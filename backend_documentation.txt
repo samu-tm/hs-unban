@@ -1,0 +1,205 @@
+# Documentazione Integrazione Backend con Bot Discord
+
+## Panoramica
+Questo documento spiega come configurare un backend per ricevere le richieste di unban dal sito web e inviarle al bot Discord esistente.
+
+## Architettura
+1. Il sito web invia i dati del modulo a un endpoint del backend
+2. Il backend elabora i dati e li invia al bot Discord
+3. Il bot Discord pubblica le richieste nel canale designato
+
+## Backend Consigliato
+Per questo esempio, utilizzeremo Node.js con Express.js.
+
+### Installazione delle dipendenze
+```bash
+npm init -y
+npm install express cors body-parser
+```
+
+### Codice del Server (esempio)
+```javascript
+const express = require('express');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Middleware
+app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// Servire i file statici del sito
+app.use(express.static('public'));
+
+// Endpoint per ricevere le richieste di unban
+app.post('/api/unban-request', async (req, res) => {
+  try {
+    const { discordName, discordUsername, discordId, banReason, unbanReason } = req.body;
+    
+    // Validazione dei dati
+    if (!discordName || !discordUsername || !discordId || !banReason || !unbanReason) {
+      return res.status(400).json({ error: 'Tutti i campi sono obbligatori' });
+    }
+    
+    // Controllo che l'ID Discord contenga solo numeri
+    if (!/^\d+$/.test(discordId)) {
+      return res.status(400).json({ error: 'L\'ID Discord deve contenere solo numeri' });
+    }
+    
+    // Qui andra` la logica per inviare i dati al tuo bot Discord
+    // Ad esempio, tramite un webhook Discord o l'API del bot
+    await sendToDiscordBot({
+      discordName,
+      discordUsername,
+      discordId,
+      banReason,
+      unbanReason
+    });
+    
+    // Risposta di successo
+    res.status(200).json({ message: 'Richiesta unban inviata con successo' });
+  } catch (error) {
+    console.error('Errore durante l\'elaborazione della richiesta:', error);
+    res.status(500).json({ error: 'Errore interno del server' });
+  }
+});
+
+// Funzione di esempio per inviare i dati al bot Discord
+async function sendToDiscordBot(data) {
+  // Questa funzione dipende da come e` implementato il tuo bot Discord
+  // Potrebbe inviare una richiesta HTTP a un endpoint del bot
+  // oppure utilizzare direttamente la libreria Discord.js se il bot e` nel tuo backend
+  
+  // Esempio di invio tramite webhook Discord
+  const webhookUrl = 'IL_TUO_WEBHOOK_URL_DEL_CANALE_DISCORD';
+  
+  const message = {
+    embeds: [{
+      title: 'Nuova Richiesta Unban',
+      fields: [
+        { name: 'Nome Discord', value: data.discordName, inline: true },
+        { name: 'Username Discord', value: data.discordUsername, inline: true },
+        { name: 'ID Discord', value: data.discordId, inline: true },
+        { name: 'Motivo del Ban', value: data.banReason },
+        { name: 'Motivo per Unban', value: data.unbanReason }
+      ],
+      timestamp: new Date().toISOString(),
+      color: 0x00ff00
+    }]
+  };
+  
+  try {
+    const response = await fetch(webhookUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(message)
+    });
+    
+    if (!response.ok) {
+      throw new Error(`Errore nell'invio al webhook: ${response.statusText}`);
+    }
+    
+    console.log('Richiesta unban inviata al canale Discord');
+  } catch (error) {
+    console.error('Errore nell\'invio al bot Discord:', error);
+    throw error;
+  }
+}
+
+// Endpoint per testare la connessione
+app.get('/test', (req, res) => {
+  res.json({ message: 'Server attivo e pronto per ricevere richieste di unban' });
+});
+
+app.listen(PORT, () => {
+  console.log(`Server in ascolto sulla porta ${PORT}`);
+});
+```
+
+### Modifica del Frontend
+Per funzionare con il backend, dovrai modificare il file `script.js` nel frontend per inviare i dati all'API invece di utilizzare localStorage:
+
+```javascript
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('unbanForm');
+    
+    form.addEventListener('submit', function(e) {
+        e.preventDefault(); // Previene l'invio normale del modulo
+        
+        // Ottieni i valori dei campi
+        const discordName = document.getElementById('discordName').value.trim();
+        const discordUsername = document.getElementById('discordUsername').value.trim();
+        const discordId = document.getElementById('discordId').value.trim();
+        const banReason = document.getElementById('banReason').value.trim();
+        const unbanReason = document.getElementById('unbanReason').value.trim();
+        
+        // Validazione dei campi
+        if (!discordName || !discordUsername || !discordId || !banReason || !unbanReason) {
+            alert('Per favore compila tutti i campi obbligatori.');
+            return;
+        }
+        
+        // Controllo che l'ID Discord contenga solo numeri
+        if (!/^\d+$/.test(discordId)) {
+            alert('L\'ID Discord deve contenere solo numeri.');
+            return;
+        }
+        
+        // Invia i dati al backend
+        fetch('http://localhost:3000/api/unban-request', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                discordName: discordName,
+                discordUsername: discordUsername,
+                discordId: discordId,
+                banReason: banReason,
+                unbanReason: unbanReason
+            })
+        })
+        .then(response => {
+            if (response.ok) {
+                // Reindirizzamento alla pagina di conferma
+                window.location.href = 'confirmation.html';
+            } else {
+                response.json().then(data => {
+                    alert('Errore durante l\'invio della richiesta: ' + data.error);
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Errore:', error);
+            alert('Si è verificato un errore durante l\'invio della richiesta.');
+        });
+    });
+});
+```
+
+## Configurazione del Bot Discord
+Dipende da come hai implementato il tuo bot Discord. Se utilizzi Discord.js, puoi creare un endpoint API all'interno del tuo bot o configurare un webhook per ricevere le richieste dal tuo backend e pubblicarle nel canale appropriato.
+
+## Deploy
+Dopo aver completato lo sviluppo, potrai deployare il backend su servizi come:
+- Heroku
+- Vercel
+- Railway
+- AWS
+- Google Cloud
+- Qualsiasi server VPS
+
+## Sicurezza
+Assicurati di implementare:
+- Validazione dei dati
+- Rate limiting
+- Protezione CSRF
+- HTTPS
+- Filtraggio delle richieste
+
+Questo per proteggere il tuo sistema da richieste malevole o spam.

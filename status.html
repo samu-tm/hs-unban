@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controlla Stato Richiesta - Server Discord Hashira</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Particelle di sfondo -->
+    <div id="particles-js"></div>
+
+    <!-- Wrapper principale -->
+    <div class="main-content">
+        <!-- Header Fisso -->
+        <header class="header">
+            <div>
+                <div class="logo">Hashira</div>
+            </div>
+            <div>
+                <button class="home-btn" onclick="location.href='home.html'">home</button>
+                <button class="regolamento-btn" onclick="location.href='regolamento.html'">regolamento</button>
+                <button class="info-btn" onclick="location.href='info.html'">info</button>
+            </div>
+        </header>
+
+        <div class="container">
+            <main>
+                <section class="status-section">
+                    <h2>Controlla Stato Richiesta</h2>
+                    <p>Inserisci il tuo ID Discord per controllare lo stato della tua richiesta.</p>
+                    
+                    <div class="form-group">
+                        <label for="discordId">ID Discord:</label>
+                        <input type="text" id="discordId" name="discordId" placeholder="Inserisci il tuo ID Discord (17-20 cifre)">
+                    </div>
+                    
+                    <button type="button" onclick="checkRequestStatus()">Controlla Stato</button>
+                    
+                    <div id="statusResult" class="status-result" style="display: none;">
+                        <h3>Dettagli Richiesta</h3>
+                        <div id="requestInfo"></div>
+                        <div id="statusInfo"></div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© Server Discord Hashira — Tutti i diritti riservati.</p>
+        <p>Sito e bot sviluppati da Samu™</p>
+    </footer>
+
+    <!-- Script per particelle -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // Inizializzazione di Particles.js
+        particlesJS("particles-js", {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: "#8e2de2" },
+                shape: { type: "circle" },
+                opacity: { value: 0.5, random: true },
+                size: { value: 3, random: true },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: "#4a00e0",
+                    opacity: 0.4,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 2,
+                    direction: "none",
+                    random: true,
+                    straight: false,
+                    out_mode: "out",
+                    bounce: false
+                }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: { enable: true, mode: "grab" },
+                    onclick: { enable: true, mode: "push" },
+                    resize: true
+                }
+            },
+            retina_detect: true
+        });
+        
+        // Funzione per controllare lo stato della richiesta
+        function checkRequestStatus() {
+            const discordId = document.getElementById('discordId').value.trim();
+            
+            if (!discordId) {
+                alert('Inserisci un ID Discord valido.');
+                return;
+            }
+            
+            // Controlla la validità dell'ID Discord (17-20 cifre)
+            if (!/^\d{17,20}$/.test(discordId)) {
+                alert('Inserisci un ID Discord valido (17-20 cifre).');
+                return;
+            }
+            
+            // Cerca la richiesta in localStorage usando l'ID Discord
+            const allKeys = Object.keys(localStorage);
+            const requestKey = allKeys.find(key => key.startsWith('unbanRequest_') && 
+                JSON.parse(localStorage.getItem(key)).discordId === discordId);
+            
+            if (requestKey) {
+                const request = JSON.parse(localStorage.getItem(requestKey));
+                
+                // Mostra i dettagli della richiesta
+                document.getElementById('requestInfo').innerHTML = `
+                    <p><strong>Nome Discord:</strong> ${request.discordName}</p>
+                    <p><strong>Username Discord:</strong> ${request.discordUsername}</p>
+                    <p><strong>ID Discord:</strong> ${request.discordId}</p>
+                    <p><strong>Inviata il:</strong> ${new Date(request.timestamp).toLocaleString()}</p>
+                `;
+                
+                // Determina lo stato effettivo dalla richiesta salvata
+                const actualStatus = request.status ? request.status : 'pending';
+                
+                document.getElementById('statusInfo').innerHTML = `
+                    <p><strong>Stato attuale:</strong> <span class="status-${actualStatus === 'approved' ? 'approved' : actualStatus === 'rejected' ? 'rejected' : 'pending'}">${actualStatus.charAt(0).toUpperCase() + actualStatus.slice(1)}</span></p>
+                    ${request.adminNote ? '<p><strong>Motivazione:</strong> ' + request.adminNote + '</p>' : ''}
+                    <p class="status-message">${getStatusMessage(actualStatus)}</p>
+                `;
+                
+                document.getElementById('statusResult').style.display = 'block';
+            } else {
+                // Richiesta non trovata
+                document.getElementById('requestInfo').innerHTML = `
+                    <p>Nessuna richiesta trovata con questo ID Discord.</p>
+                    <p>Controlla di aver inserito l'ID correttamente o che la richiesta sia stata già inviata.</p>
+                `;
+                
+                document.getElementById('statusInfo').innerHTML = '';
+                document.getElementById('statusResult').style.display = 'block';
+            }
+        }
+        
+        function getStatusMessage(status) {
+            switch(status) {
+                case 'approved':
+                    return 'La tua richiesta è stata approvata. Riceverai un invito nel tuo profilo Discord a breve.';
+                case 'rejected':
+                    return 'La tua richiesta è stata esaminata ma non soddisfa i requisiti per l\'unban.';
+                case 'In fase di valutazione':
+                    return 'La tua richiesta è attualmente in fase di valutazione. Ti preghiamo di attendere.';
+                default:
+                    return 'La tua richiesta è in attesa di essere revisionata dal team di moderazione.';
+            }
+        }
+    </script>
+</body>
+</html>

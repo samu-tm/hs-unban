@@ -1,0 +1,1531 @@
+/* Reset e impostazioni di base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Animazioni e effetti personalizzati */
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+@keyframes pulseGlow {
+    0% { box-shadow: 0 0 0 0 rgba(142, 45, 226, 0.4); }
+    70% { box-shadow: 0 0 0 15px rgba(142, 45, 226, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(142, 45, 226, 0); }
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(-45deg, #667eea, #764ba2, #6b73b5, #5a67d8);
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
+    color: #f0f0ff;
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    padding-top: 80px; /* Spazio per l'header fisso */
+}
+
+/* Contenitore principale che occupa lo spazio rimanente */
+.main-content {
+    flex: 1 0 auto;
+    position: relative;
+    z-index: 2;
+}
+
+/* Assicura che #particles-js non interferisca con il layout */
+#particles-js {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+/* Stile per le particelle di sfondo */
+#particles-js {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+/* Header fisso */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background: rgba(15, 15, 25, 0.85);
+    backdrop-filter: blur(15px);
+    z-index: 1000;
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.4s ease;
+}
+
+.header:hover {
+    background: rgba(20, 20, 35, 0.9);
+    box-shadow: 0 10px 40px rgba(123, 55, 206, 0.4);
+}
+
+.logo {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #a166ff;
+    text-shadow: 0 0 15px rgba(161, 102, 255, 0.7);
+    animation: float 6s ease-in-out infinite;
+    letter-spacing: 1px;
+    font-family: 'Poppins', sans-serif;
+    position: relative;
+}
+
+.logo::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #a166ff, transparent);
+    animation: moveLine 3s infinite;
+}
+
+@keyframes moveLine {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+.header > div:first-child {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.header > div:last-child {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Assicura che il logo sia allineato a sinistra e i pulsanti a destra */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background: rgba(25, 25, 35, 0.95);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #8e2de2;
+    text-shadow: 0 0 10px rgba(142, 45, 226, 0.7);
+}
+
+button {
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 8px 20px rgba(106, 17, 203, 0.4);
+    position: relative;
+    overflow: hidden;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-family: 'Poppins', sans-serif;
+}
+
+button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transition: 0.5s;
+}
+
+button:hover::before {
+    left: 100%;
+}
+
+button:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 15px 30px rgba(106, 17, 203, 0.6);
+    animation: pulseGlow 2s infinite;
+}
+
+button:active {
+    transform: translateY(0) scale(0.98);
+}
+
+.regolamento-btn {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    box-shadow: 0 8px 20px rgba(17, 153, 142, 0.4);
+}
+
+.regolamento-btn:hover {
+    box-shadow: 0 15px 30px rgba(17, 153, 142, 0.6);
+    animation: pulseGlow 2s infinite;
+}
+
+.info-btn {
+    background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+    box-shadow: 0 8px 20px rgba(255, 65, 108, 0.4);
+}
+
+.info-btn:hover {
+    box-shadow: 0 15px 30px rgba(255, 65, 108, 0.6);
+    animation: pulseGlow 2s infinite;
+}
+
+.regolamento-btn {
+    background: linear-gradient(135deg, #2d5a87, #3a7bd5);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(58, 123, 213, 0.4);
+    margin-left: 10px;
+}
+
+.regolamento-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 20px rgba(58, 123, 213, 0.6);
+}
+
+/* Sezione Hero */
+.hero {
+    min-height: calc(85vh - 80px); /* Ridotto da 100vh a 85vh per avvicinare il contenuto al footer */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px 20px 100px; /* Aggiunto padding inferiore per spazio tra pulsanti e footer */
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, rgba(161, 102, 255, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
+    z-index: -1;
+}
+
+.hero-content {
+    max-width: 800px;
+    color: white;
+    text-shadow: 0 2px 15px rgba(0, 0, 0, 0.5);
+    z-index: 2;
+    position: relative;
+}
+
+#title {
+    font-size: 4.5rem;
+    margin-bottom: 20px;
+    font-weight: 800;
+    color: white;
+    text-shadow: 0 5px 15px rgba(161, 102, 255, 0.5);
+    letter-spacing: 2px;
+    animation: float 6s ease-in-out infinite;
+}
+
+.shimmer-text {
+    background: linear-gradient(90deg, #fff, #a166ff, #6a11cb, #2575fc, #fff);
+    background-size: 400% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 10s linear infinite;
+    position: relative;
+}
+
+.shimmer-text::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #a166ff, transparent);
+    animation: moveLine 3s infinite;
+}
+
+@keyframes shimmer {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 400% 50%; }
+}
+
+#subtitle {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    font-weight: 600;
+    color: #e0e0ff;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    letter-spacing: 1px;
+}
+
+#description {
+    font-size: 1.2rem;
+    margin-bottom: 50px;
+    line-height: 2;
+    color: #d0d0ff;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* Pulsanti principali */
+.button-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.main-btn {
+    padding: 20px 40px;
+    font-size: 1.3rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 60px;
+    cursor: pointer;
+    transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    position: relative;
+    overflow: hidden;
+    min-width: 300px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    z-index: 1;
+    font-family: 'Poppins', sans-serif;
+}
+
+.main-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, #ff8a00, #e52e71, #22c1c3);
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.main-btn:hover::before {
+    opacity: 1;
+}
+
+.main-btn::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, #22c1c3, #e52e71, #ff8a00);
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    animation: gradientShift 3s infinite;
+    background-size: 400% 400%;
+}
+
+.main-btn:hover::after {
+    opacity: 0.2;
+}
+
+.unban-btn {
+    background: linear-gradient(45deg, #ff416c 0%, #ff4b2b 100%);
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.status-btn {
+    background: linear-gradient(45deg, #2193b0 0%, #6dd5ed 100%);
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.main-btn:hover {
+    transform: translateY(-8px) scale(1.05);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.main-btn:active {
+    transform: translateY(0) scale(0.98);
+}
+
+/* Effetti hover e pulsanti */
+.hover-effect {
+    transform: translateY(0);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.pulse-glow-effect {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 8px 25px rgba(74, 0, 224, 0.5); }
+    50% { box-shadow: 0 8px 35px rgba(142, 45, 226, 0.8); }
+    100% { box-shadow: 0 8px 25px rgba(74, 0, 224, 0.5); }
+}
+
+/* Footer */
+.footer {
+    width: 100%;
+    padding: 30px;
+    text-align: center;
+    color: #c0c0ff;
+    font-size: 1rem;
+    background: rgba(15, 15, 25, 0.8);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.2);
+    margin-top: auto; /* Per assicurare che il footer sia dopo il contenuto */
+}
+
+.footer p {
+    margin: 5px 0;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* Stile per i messaggi di conferma */
+.confirmation-message {
+    background: rgba(25, 25, 45, 0.7);
+    border: 1px solid rgba(161, 102, 255, 0.3);
+    border-radius: 15px;
+    padding: 30px;
+    margin: 30px 0;
+    text-align: left;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s ease;
+}
+
+.confirmation-message::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, #a166ff, #6a11cb);
+}
+
+.confirmation-message p {
+    margin-bottom: 15px;
+    color: #e0e0ff;
+    line-height: 1.7;
+    position: relative;
+    z-index: 1;
+}
+
+.form-summary {
+    background: rgba(30, 30, 50, 0.7);
+    border: 1px solid rgba(37, 117, 252, 0.3);
+    border-radius: 15px;
+    padding: 25px;
+    margin: 25px 0;
+    text-align: left;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s ease;
+}
+
+.form-summary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, #2575fc, #38ef7d);
+}
+
+.form-summary h3 {
+    color: white;
+    margin-bottom: 20px;
+    text-align: center;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+.form-summary h3::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, #2575fc, #38ef7d);
+    border-radius: 2px;
+}
+
+.form-summary p {
+    margin: 12px 0;
+    padding: 10px 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: #f0f0ff;
+    border-left: 3px solid #a166ff;
+    transition: all 0.3s ease;
+}
+
+.form-summary p:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateX(5px);
+}
+
+/* Stile per le pagine interne (non home) */
+.container {
+    max-width: 900px;
+    margin: 120px auto 70px;
+    background: rgba(15, 15, 25, 0.7);
+    backdrop-filter: blur(20px);
+    border-radius: 25px;
+    box-shadow: 
+        0 25px 50px -12px rgba(0, 0, 0, 0.5),
+        inset 0 0 15px rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+    position: relative;
+    z-index: 2;
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.4s ease;
+}
+
+.container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(161, 102, 255, 0.1), rgba(37, 117, 252, 0.1));
+    z-index: -1;
+    border-radius: 25px;
+}
+
+.container:hover {
+    box-shadow: 
+        0 35px 60px -15px rgba(0, 0, 0, 0.6),
+        inset 0 0 20px rgba(255, 255, 255, 0.15);
+    transform: translateY(-5px);
+}
+
+/* Stile specifico per i contenuti delle pagine interne */
+.container main {
+    padding: 50px;
+}
+
+/* Stile per le sezioni nelle pagine interne */
+.unban-form-section h2,
+.confirmation-section h2,
+.info-section h2,
+.regolamento-section h2,
+.status-section h2 {
+    color: white;
+    margin-bottom: 30px;
+    font-size: 2.5rem;
+    text-shadow: 0 5px 15px rgba(161, 102, 255, 0.5);
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.unban-form-section h2::after,
+.confirmation-section h2::after,
+.info-section h2::after,
+.regolamento-section h2::after,
+.status-section h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 4px;
+    background: linear-gradient(90deg, transparent, #a166ff, transparent);
+    border-radius: 2px;
+}
+
+.unban-form-section p,
+.confirmation-section p,
+.info-section p,
+.regolamento-section p,
+.status-section p {
+    margin-bottom: 30px;
+    font-size: 1.2rem;
+    color: #e0e0ff;
+    line-height: 1.8;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* Stile per i form nelle pagine interne */
+.form-group {
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: #d0d0ff;
+    font-size: 1.1rem;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+.form-group label::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 40%;
+    height: 2px;
+    background: linear-gradient(90deg, #a166ff, transparent);
+    border-radius: 1px;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 15px 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(161, 102, 255, 0.3);
+    border-radius: 12px;
+    color: white;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #a166ff;
+    box-shadow: 
+        0 0 0 2px rgba(161, 102, 255, 0.5),
+        0 0 20px rgba(161, 102, 255, 0.3);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: rgba(224, 224, 255, 0.6);
+}
+
+/* Stile per la sezione CAPTCHA */
+.captcha-section {
+    background: rgba(40, 40, 60, 0.7);
+    border: 1px solid rgba(161, 102, 255, 0.4);
+    border-radius: 15px;
+    padding: 30px;
+    margin: 30px 0;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.captcha-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, #ff416c, #ff4b2b);
+}
+
+.captcha-section h3 {
+    color: white;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+.captcha-question {
+    margin: 25px 0;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.text-captcha-container canvas {
+    border: 2px solid rgba(161, 102, 255, 0.5);
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.1);
+    margin-bottom: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.text-captcha-container input {
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+    display: block;
+}
+
+/* Stile per i messaggi di conferma nelle pagine interne */
+.confirmation-message {
+    background: rgba(212, 237, 218, 0.3);
+    border: 1px solid rgba(195, 230, 203, 0.5);
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px 0;
+    text-align: left;
+    backdrop-filter: blur(5px);
+}
+
+.confirmation-message p {
+    margin-bottom: 10px;
+    color: #e0ffe0;
+}
+
+.form-summary {
+    background: rgba(248, 249, 250, 0.3);
+    border: 1px solid rgba(222, 226, 230, 0.5);
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px 0;
+    text-align: left;
+    backdrop-filter: blur(5px);
+}
+
+.form-summary h3 {
+    color: white;
+    margin-bottom: 15px;
+    text-align: center;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.form-summary p {
+    margin: 8px 0;
+    padding: 5px 10px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 4px;
+    color: #333;
+}
+
+/* Stile per i pulsanti nelle pagine interne */
+button,
+.btn-primary {
+    background: linear-gradient(135deg, #4a00e0, #8e2de2);
+    color: white;
+    border: none;
+    padding: 15px 40px;
+    font-size: 1.1rem;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+button:hover,
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 20px rgba(74, 0, 224, 0.7);
+}
+
+button:active,
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+/* Stile per l'animazione di caricamento */
+.loading-spinner {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 1s ease-in-out infinite;
+    margin-right: 8px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Stile per la pagina di stato richiesta */
+.status-section {
+    text-align: center;
+}
+
+.status-section h2 {
+    color: white;
+    margin-bottom: 25px;
+    font-size: 2.2rem;
+    text-shadow: 0 5px 15px rgba(161, 102, 255, 0.5);
+}
+
+.status-section p {
+    margin-bottom: 35px;
+    font-size: 1.2rem;
+    color: #e0e0ff;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.status-result {
+    margin-top: 40px;
+    padding: 30px;
+    background: rgba(30, 30, 50, 0.7);
+    border-radius: 20px;
+    text-align: left;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(161, 102, 255, 0.3);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    position: relative;
+    overflow: hidden;
+}
+
+.status-result::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, #6a11cb, #2575fc);
+}
+
+.status-result h3 {
+    color: white;
+    margin-bottom: 20px;
+    font-size: 1.6rem;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+.status-result h3::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background: #a166ff;
+    border-radius: 2px;
+}
+
+.status-result p {
+    margin: 15px 0;
+    padding: 12px 18px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    color: #f0f0ff;
+    border-left: 4px solid #a166ff;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.status-result p::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 5px;
+    height: 100%;
+    background: linear-gradient(to bottom, #a166ff, #6a11cb);
+}
+
+.status-approved {
+    color: #7fff7f !important;
+    font-weight: bold;
+    border-left-color: #7fff7f !important;
+}
+
+.status-approved::before {
+    background: linear-gradient(to bottom, #7fff7f, #38b44a) !important;
+}
+
+.status-rejected {
+    color: #ff6b6b !important;
+    font-weight: bold;
+    border-left-color: #ff6b6b !important;
+}
+
+.status-rejected::before {
+    background: linear-gradient(to bottom, #ff6b6b, #d63031) !important;
+}
+
+.status-pending {
+    color: #ffd166 !important;
+    font-weight: bold;
+    border-left-color: #ffd166 !important;
+}
+
+.status-pending::before {
+    background: linear-gradient(to bottom, #ffd166, #fdcb6e) !important;
+}
+
+.status-message {
+    margin-top: 20px;
+    padding: 18px;
+    background: rgba(25, 25, 45, 0.8);
+    border-radius: 12px;
+    font-style: italic;
+    border: 1px solid rgba(106, 17, 203, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.status-message::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 5px;
+    height: 100%;
+    background: linear-gradient(to bottom, #6a11cb, #2575fc);
+}
+
+/* Stile per la pagina admin */
+.admin-controls {
+    margin-top: 30px;
+}
+
+.search-filter {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.search-filter input,
+.search-filter select {
+    padding: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.9);
+    color: #333;
+    min-width: 250px;
+}
+
+.requests-list {
+    margin-top: 20px;
+}
+
+.request-item {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 15px;
+    backdrop-filter: blur(5px);
+}
+
+.request-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.request-header h4 {
+    color: white;
+    margin: 0;
+}
+
+.request-status {
+    background: #ffd166;
+    color: #333;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.request-content {
+    text-align: left;
+}
+
+.request-content p {
+    margin: 8px 0;
+    color: #e0e0ff;
+}
+
+.request-actions {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.action-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.approve-btn {
+    background: #06d6a0;
+    color: white;
+}
+
+.approve-btn:hover {
+    background: #05b48a;
+    transform: translateY(-2px);
+}
+
+.reject-btn {
+    background: #ef476f;
+    color: white;
+}
+
+.reject-btn:hover {
+    background: #d63a62;
+    transform: translateY(-2px);
+}
+
+.delete-btn {
+    background: #333;
+    color: white;
+}
+
+.delete-btn:hover {
+    background: #555;
+    transform: translateY(-2px);
+}
+
+.admin-action {
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+.admin-action textarea {
+    width: 100%;
+    margin-bottom: 5px;
+    padding: 8px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    resize: vertical;
+    min-height: 60px;
+}
+
+.request-code-info {
+    margin-top: 15px;
+    padding: 12px;
+    background: rgba(142, 45, 226, 0.2);
+    border-radius: 4px;
+    border-left: 4px solid #8e2de2;
+}
+
+/* Stile per le avvertenze nelle pagine interne */
+.warning {
+    background: rgba(255, 243, 205, 0.3);
+    border: 1px solid rgba(255, 234, 167, 0.5);
+    border-radius: 8px;
+    padding: 15px;
+    margin: 20px 0;
+    text-align: center;
+    backdrop-filter: blur(5px);
+}
+
+.warning p {
+    color: #fff3cd;
+    font-weight: bold;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+main {
+    padding: 30px;
+}
+
+/* Stile per la pagina form e conferma */
+.unban-form-section {
+    text-align: center;
+}
+
+.unban-form-section h2 {
+    color: #4a00e0;
+    margin-bottom: 20px;
+    font-size: 2rem;
+}
+
+.unban-form-section p {
+    margin-bottom: 30px;
+    font-size: 1.1rem;
+    color: #555;
+}
+
+.form-group {
+    margin-bottom: 25px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #4a00e0;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #4a00e0;
+    box-shadow: 0 0 0 2px rgba(74, 0, 224, 0.2);
+}
+
+.warning {
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+    border-radius: 8px;
+    padding: 15px;
+    margin: 20px 0;
+    text-align: center;
+}
+
+.warning p {
+    color: #856404;
+    font-weight: bold;
+}
+
+/* Stile per la sezione CAPTCHA */
+.captcha-section {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 25px 0;
+}
+
+.captcha-section h3 {
+    color: #4a00e0;
+    margin-bottom: 15px;
+}
+
+.captcha-question {
+    text-align: center;
+    margin-top: 15px;
+    margin-bottom: 20px;
+}
+
+.captcha-question p {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: #495057;
+}
+
+.captcha-question input[type="number"],
+.text-captcha-container input {
+    width: 100px;
+    text-align: center;
+    font-size: 1.2rem;
+    padding: 8px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+}
+
+.text-captcha-container {
+    margin-top: 15px;
+}
+
+.text-captcha-container canvas {
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    background-color: #f8f9fa;
+    margin-bottom: 10px;
+}
+
+/* Stile per le immagini del CAPTCHA */
+.image-captcha-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.captcha-image {
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.captcha-image:hover {
+    border-color: #4a00e0;
+    transform: scale(1.05);
+}
+
+.captcha-image.selected {
+    border-color: #28a745;
+    background-color: rgba(40, 167, 69, 0.1);
+}
+
+.image-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+}
+
+/* Stile per lo stato della verifica */
+.captcha-status {
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.captcha-status p {
+    margin: 0;
+    font-weight: bold;
+}
+
+button {
+    background: linear-gradient(135deg, #4a00e0, #8e2de2);
+    color: white;
+    border: none;
+    padding: 15px 40px;
+    font-size: 1.1rem;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 15px rgba(74, 0, 224, 0.4);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+/* Stile per la sezione conferma */
+.confirmation-section {
+    text-align: center;
+}
+
+.confirmation-section h2 {
+    color: #4a00e0;
+    margin-bottom: 20px;
+    font-size: 2rem;
+}
+
+.confirmation-message {
+    background: #d4edda;
+    border: 1px solid #c3e6cb;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px 0;
+    text-align: left;
+}
+
+.confirmation-message p {
+    margin-bottom: 10px;
+    color: #155724;
+}
+
+.form-summary {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px 0;
+    text-align: left;
+}
+
+.form-summary h3 {
+    color: #4a00e0;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.form-summary p {
+    margin: 8px 0;
+    padding: 5px 10px;
+    background: white;
+    border-radius: 4px;
+}
+
+/* Responsività */
+@media (max-width: 768px) {
+    .container {
+        margin: 100px 10px 80px;
+        border-radius: 10px;
+    }
+    
+    .header {
+        padding: 10px 15px;
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+    
+    .logo {
+        font-size: 1.4rem;
+    }
+    
+    .home-btn {
+        padding: 8px 15px;
+        font-size: 0.9rem;
+        align-self: center;
+    }
+    
+    #title {
+        font-size: 2rem; /* Ridotto ulteriormente per evitare sovrapposizioni */
+        margin-bottom: 12px; /* Ridotto per evitare sovrapposizioni */
+    }
+    
+    #subtitle {
+        font-size: 1rem; /* Ridotto per evitare sovrapposizioni */
+        margin-bottom: 8px; /* Ridotto per evitare sovrapposizioni */
+    }
+    
+    #description {
+        font-size: 0.9rem; /* Ridotto per evitare sovrapposizioni */
+        margin-bottom: 20px; /* Ridotto per evitare sovrapposizioni */
+        line-height: 1.6; /* Ottimizzato per leggibilità */
+    }
+    
+    .main-btn {
+        min-width: 220px; /* Ridotto per adattarsi meglio a schermi piccoli */
+        padding: 14px 18px; /* Ottimizzato per spazio */
+        font-size: 0.95rem; /* Leggermente ridotto */
+        margin: 5px;
+        border-radius: 45px; /* Ottimizzato per mobile */
+    }
+    
+    .button-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+    
+    .hero-content {
+        padding: 0 10px; /* Ottimizzato per ridurre lo spazio laterale */
+    }
+    
+    /* Ottimizzazione ulteriore per lo spazio verticale */
+    .hero {
+        padding: 20px 15px 80px; /* Aggiornato per mobile */
+        min-height: calc(85vh - 80px); /* Ridotto per mobile */
+    }
+    
+    /* Stile per le pagine interne su mobile */
+    .container {
+        margin: 120px 15px 60px;
+        padding: 20px;
+    }
+    
+    .unban-form-section h2,
+    .confirmation-section h2 {
+        font-size: 1.7rem;
+        margin-bottom: 15px;
+    }
+    
+    .form-group input,
+    .form-group textarea {
+        padding: 10px;
+    }
+    
+    .form-group textarea {
+        min-height: 120px;
+    }
+    
+    .captcha-question input[type="number"],
+    .text-captcha-container input {
+        width: 140px;
+        padding: 10px;
+        font-size: 1rem;
+    }
+    
+    .text-captcha-container canvas {
+        width: 160px;
+        height: 50px;
+    }
+    
+    /* Stile per il footer su mobile */
+    .footer {
+        padding: 15px;
+        font-size: 0.8rem;
+    }
+}
+
+/* Ottimizzazioni specifiche per dispositivi molto piccoli */
+@media (max-width: 480px) {
+    .header {
+        padding: 8px 10px;
+    }
+    
+    .logo {
+        font-size: 1.2rem;
+    }
+    
+    .home-btn {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+    }
+    
+    #title {
+        font-size: 1.7rem; /* Ridotto ulteriormente per schermi molto piccoli */
+        margin-bottom: 10px; /* Ottimizzato per spazio */
+    }
+    
+    #subtitle {
+        font-size: 0.95rem; /* Ridotto per schermi molto piccoli */
+        margin-bottom: 8px; /* Ottimizzato per spazio */
+    }
+    
+    #description {
+        font-size: 0.85rem; /* Ridotto per schermi molto piccoli */
+        margin-bottom: 20px; /* Ridotto per ottimizzare spazio */
+        line-height: 1.5; /* Ottimizzato per leggibilità */
+    }
+    
+    .main-btn {
+        min-width: 190px; /* Ridotto ulteriormente per schermi molto piccoli */
+        padding: 12px 15px; /* Ottimizzato per schermi molto piccoli */
+        font-size: 0.85rem; /* Ridotto per schermi molto piccoli */
+    }
+    
+    .feature-card {
+        min-width: 180px; /* Ridotto per schermi molto piccoli */
+        padding: 12px; /* Ridotto per ottimizzare spazio */
+    }
+    
+    .hero {
+        min-height: calc(85vh - 80px); /* Aggiornato per schermi molto piccoli */
+        padding: 20px 15px 70px; /* Aggiunto padding inferiore per schermi molto piccoli */
+    }
+    
+    /* Pagine interne su dispositivi molto piccoli */
+    .container {
+        margin: 120px 10px 60px;
+        padding: 15px;
+    }
+    
+    .unban-form-section h2,
+    .confirmation-section h2 {
+        font-size: 1.5rem;
+    }
+    
+    .form-group label {
+        font-size: 0.95rem;
+    }
+    
+    .form-group input,
+    .form-group textarea {
+        padding: 8px;
+        font-size: 0.95rem;
+    }
+    
+    .warning p {
+        font-size: 0.9rem;
+    }
+    
+    .captcha-section {
+        padding: 15px;
+    }
+    
+    .form-summary h3 {
+        font-size: 1.2rem;
+    }
+    
+    .form-summary p {
+        font-size: 0.9rem;
+    }
+    
+    button,
+    .btn-primary {
+        padding: 12px 30px;
+        font-size: 1rem;
+    }
+}
