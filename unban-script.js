@@ -1,12 +1,12 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Controlla il rate limiting
+    // Controlla il rate limiting (1 richiesta ogni ora)
     function checkRateLimit() {
         const lastSubmission = localStorage.getItem('lastUnbanSubmission');
         const now = new Date().getTime();
         
-        // Limite di 1 richiesta ogni 30 minuti (1800000 ms)
-        if (lastSubmission && (now - parseInt(lastSubmission)) < 1800000) {
-            const remainingTime = Math.ceil((1800000 - (now - parseInt(lastSubmission))) / 60000);
+        // Limite di 1 richiesta ogni ora (3600000 ms)
+        if (lastSubmission && (now - parseInt(lastSubmission)) < 3600000) {
+            const remainingTime = Math.ceil((3600000 - (now - parseInt(lastSubmission))) / 60000);
             alert(`Puoi inviare una nuova richiesta tra ${remainingTime} minuti. Evita di inviare richieste ripetute.`);
             return false;
         }
@@ -121,10 +121,11 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
         
-        // Controllo rate limiting
+        // Controllo rate limiting (1 ora)
         if (!checkRateLimit()) {
             return;
         }
+
         
         // Mostra animazione di caricamento
         showLoadingAnimation();
@@ -153,23 +154,6 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
-        // Crea il payload per il webhook Discord
-        const webhookData = {
-            embeds: [{
-                title: 'Nuova Richiesta Unban',
-                fields: [
-                    { name: 'Nome Discord', value: discordName, inline: true },
-                    { name: 'Username Discord', value: discordUsername, inline: true },
-                    { name: 'ID Discord', value: discordId, inline: true },
-                    { name: 'Perché sei stato bannato', value: banReason },
-                    { name: 'Perché vuoi essere unbannato', value: unbanReason }
-                ],
-                footer: { text: `ID Utente: ${discordId}` },
-                timestamp: new Date().toISOString(),
-                color: 0x00ff00
-            }]
-        };
-        
         // Salva i dati della richiesta in localStorage per lo stato (usando l'ID Discord come chiave)
         const requestInfo = {
             discordName: discordName,
@@ -184,25 +168,36 @@ document.addEventListener('DOMContentLoaded', function() {
         
         localStorage.setItem('unbanRequest_' + discordId, JSON.stringify(requestInfo));
         
-        // Registra l'invio per il rate limiting
+        // Registra l'invio per il rate limiting (1 ora)
         localStorage.setItem('lastUnbanSubmission', new Date().getTime().toString());
+        
         
         // Cancella la bozza del modulo
         localStorage.removeItem('unbanFormDraft');
-        
-        // Invia i dati al webhook Discord
-        fetch('https://discord.com/api/webhooks/1423649018898022544/-wZP32iCsvIho2_Joi7LR9d6FCPW_KtPQZFcasU-JSOujBAnFN8nGX0WlFlW8Pa4deVW', {
+
+        // Invia i dati al backend
+        fetch('/api/unban-requests-webhook', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(webhookData)
+            body: JSON.stringify({
+                discordName: discordName,
+                discordUsername: discordUsername,
+                discordId: discordId,
+                banReason: banReason,
+                unbanReason: unbanReason
+            })
         })
         .then(response => {
             if (response.ok) {
                 // Reindirizzamento alla pagina di conferma
                 localStorage.setItem('requestCode', discordId);
                 window.location.href = 'confirmation.html';
+            } else if (response.status === 409) {
+                alert('Hai già inviato una richiesta di unban con questo ID Discord. Attendi la risposta entro 24 ore.');
+                generateTextCaptcha(); // Rigenera il CAPTCHA
+                hideLoadingAnimation();
             } else {
                 alert('Errore durante l\'invio della richiesta. Riprova più tardi.');
                 generateTextCaptcha(); // Rigenera il CAPTCHA

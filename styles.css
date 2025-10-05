@@ -1499,39 +1499,63 @@ button:active {
     
     /* Ottimizzazione per la pagina admin su mobile */
     .request-item {
-        padding: 15px; /* Ridotto per mobile */
-        margin-bottom: 12px; /* Leggermente ridotto */
+        padding: 18px; /* Aumentato leggermente per spazio interno */
+        margin-bottom: 15px; /* Aumentato per separazione */
+        font-size: 1rem; /* Aumentato per leggibilità su mobile */
     }
     
     .request-header {
-        flex-direction: column; /* Stacco verticale per mobile */
-        align-items: flex-start; /* Allineamento a sinistra */
-        gap: 8px; /* Spazio tra elementi */
+        flex-direction: row; /* Allineamento orizzontale per risparmiare spazio */
+        justify-content: space-between; /* Spazio tra elementi */
+        align-items: flex-start; /* Allineamento in alto */
+        gap: 10px; /* Spazio tra elementi */
+        flex-wrap: wrap; /* Permette a elementi di andare a capo se necessario */
+    }
+    
+    .request-header h4 {
+        font-size: 1.1rem; /* Aumentato per leggibilità */
+        word-break: break-word; /* Per gestire ID lunghi */
+        flex: 1; /* Occupa spazio disponibile */
+        margin: 0; /* Rimuove margin extra */
     }
     
     .request-status {
-        align-self: flex-end; /* Allineamento a destra per lo stato */
+        font-size: 0.9rem; /* Aumentato leggermente */
+        align-self: center; /* Allineamento centrato */
     }
     
     .request-content p {
-        font-size: 0.95rem; /* Leggermente aumentato per leggibilità */
-        margin: 6px 0; /* Ridotto */
-        padding: 5px 0; /* Ridotto */
+        font-size: 1rem; /* Aumentato per leggibilità */
+        margin: 8px 0; /* Aumentato per separazione */
+        padding: 8px 0; /* Aumentato per chiarezza */
+        line-height: 1.5; /* Migliorato per leggibilità */
     }
     
     .request-actions {
-        flex-direction: column; /* Pulsanti in colonna */
-        align-items: center; /* Centrati */
+        flex-direction: row; /* Allineamento orizzontale per risparmiare spazio */
+        justify-content: center; /* Centrato */
         gap: 8px; /* Spazio tra pulsanti */
+        flex-wrap: wrap; /* Consente a pulsanti di andare a capo */
     }
     
     .action-btn {
-        width: 100%; /* Pulsanti a tutta larghezza */
-        max-width: 250px; /* Larghezza massima */
+        min-width: 85px; /* Larghezza minima per accessibilità */
+        padding: 10px 12px; /* Aumentato per touch */
+        font-size: 0.85rem; /* Aumentato leggermente */
+        flex: 1; /* Distribuisce uniformemente lo spazio */
+        min-height: 44px; /* Altezza minima per touch */
+        max-width: 120px; /* Larghezza massima per mantenere proporzioni */
+    }
+    
+    .admin-action {
+        width: 100%; /* Ogni azione occupa tutta la larghezza */
+        margin-bottom: 10px; /* Spazio tra le azioni */
     }
     
     .admin-action textarea {
-        min-height: 70px; /* Ridotto per mobile */
+        min-height: 85px; /* Aumentato per facilitare la digitazione */
+        font-size: 1rem; /* Aumentato per leggibilità */
+        padding: 12px; /* Aumentato per comfort */
     }
     
     .form-group label {
@@ -1562,23 +1586,71 @@ button:active {
     
     /* Ottimizzazione specifica per la pagina admin su schermi molto piccoli */
     .request-item {
-        padding: 12px; /* Ridotto ulteriormente */
-        margin-bottom: 10px; /* Ridotto ulteriormente */
+        padding: 15px; /* Aumentato leggermente per migliorare lo spazio interno */
+        margin-bottom: 12px; /* Aumentato leggermente per separazione */
+        font-size: 0.95rem; /* Leggermente aumentato per leggibilità */
+    }
+    
+    .request-header {
+        flex-direction: row; /* Torna a riga per schermi molto piccoli */
+        justify-content: space-between; /* Spazio tra elementi */
+    }
+    
+    .request-header h4 {
+        font-size: 1rem; /* Aumentato per leggibilità */
+        word-break: break-word; /* Per gestire ID lunghi */
+        flex: 1; /* Occupa spazio disponibile */
+    }
+    
+    .request-status {
+        font-size: 0.85rem; /* Leggermente aumentato */
     }
     
     .request-content p {
-        font-size: 0.9rem; /* Leggermente ridotto per schermi molto piccoli */
-        margin: 5px 0; /* Ridotto ulteriormente */
+        font-size: 0.95rem; /* Aumentato per leggibilità */
+        margin: 6px 0; /* Aumentato per separazione */
+        padding: 6px 0; /* Aumentato per chiarezza */
+        line-height: 1.4; /* Migliorato per leggibilità */
+    }
+    
+    .request-actions {
+        flex-direction: row; /* Riportato a riga per schermi molto piccoli */
+        flex-wrap: wrap; /* Consente a pulsanti di andare a capo */
+        gap: 6px; /* Spazio tra pulsanti */
     }
     
     .action-btn {
-        max-width: 220px; /* Ridotto per schermi molto piccoli */
-        padding: 7px 12px; /* Ridotto */
-        font-size: 0.85rem; /* Leggermente ridotto */
+        min-width: 80px; /* Larghezza minima per accessibilità */
+        padding: 8px 10px; /* Aumentato per touch */
+        font-size: 0.8rem; /* Aumentato leggermente */
+        flex: 1; /* Distribuisce uniformemente lo spazio */
+        min-height: 40px; /* Altezza minima per touch */
+    }
+    
+    .admin-action {
+        width: 100%; /* Ogni azione occupa tutta la larghezza */
+        margin-bottom: 8px; /* Spazio tra le azioni */
     }
     
     .admin-action textarea {
-        min-height: 60px; /* Ridotto per schermi molto piccoli */
+        min-height: 80px; /* Aumentato per facilitare la digitazione */
+        font-size: 0.9rem; /* Aumentato per leggibilità */
+        padding: 10px; /* Aumentato per comfort */
+    }
+    
+    .admin-action textarea:focus {
+        font-size: 1rem; /* Aumenta quando in uso */
+    }
+    
+    .search-filter {
+        flex-direction: column; /* Stacco verticale per mobile */
+        gap: 10px; /* Aumentato spazio tra elementi */
+    }
+    
+    .search-filter input,
+    .search-filter select {
+        min-width: 100%; /* Full width per mobile */
+        padding: 12px; /* Aumentato per touch */
     }
     
     button,

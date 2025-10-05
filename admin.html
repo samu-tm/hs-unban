@@ -178,92 +178,155 @@
         }
         
         // Funzione di autenticazione amministratore
-        // Versione con password hardcoded per accesso diretto
         function login() {
             const password = document.getElementById('adminPassword').value;
-            const correctPassword = '9862&Admin&Hashira';
             
-            if (password === correctPassword) {
-                // Salva il token di autenticazione
-                localStorage.setItem('adminToken', 'admin_session_token');
-                
-                document.getElementById('loginSection').style.display = 'none';
-                document.getElementById('adminPanel').style.display = 'block';
-                loadRequests();
-            } else {
-                alert('Password errata. Accesso negato.');
-            }
-        }
-        
-        // Funzione per caricare le richieste
-        // In produzione, questa funzione chiamerebbe un endpoint API sicuro
-        function loadRequests() {
-            const requestsList = document.getElementById('requestsList');
-            requestsList.innerHTML = '';
-            
-            // Versione demo: carica da localStorage
-            // In produzione: carica da un endpoint API sicuro
-            const allKeys = Object.keys(localStorage);
-            const requestKeys = allKeys.filter(key => key.startsWith('unbanRequest_'));
-            
-            if (requestKeys.length === 0) {
-                requestsList.innerHTML = '<p>Nessuna richiesta trovata.</p>';
-                return;
-            }
-            
-            // Carica e mostra tutte le richieste
-            requestKeys.forEach(key => {
-                const request = JSON.parse(localStorage.getItem(key));
-                
-                const requestElement = document.createElement('div');
-                requestElement.className = 'request-item';
-                
-                // Converti lo stato in italiano
-                let statoIta = '';
-                if(request.status === 'approved') {
-                    statoIta = 'Approvata';
-                } else if(request.status === 'rejected') {
-                    statoIta = 'Rifiutata';
-                } else if(request.status === 'pending') {
-                    statoIta = 'In attesa di risposta';
+            fetch('/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username: 'admin',
+                    password: password
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Salva il token di autenticazione
+                    localStorage.setItem('adminToken', data.token);
+                    
+                    document.getElementById('loginSection').style.display = 'none';
+                    document.getElementById('adminPanel').style.display = 'block';
+                    loadRequests();
                 } else {
-                    statoIta = request.status ? request.status.charAt(0).toUpperCase() + request.status.slice(1) : 'In attesa di revisione';
+                    alert('Password errata. Accesso negato.');
                 }
-                
-                requestElement.innerHTML = `
-                    <div class="request-header">
-                        <h4>Richiesta per ID: ${request.discordId}</h4>
-                        <div class="request-status">${statoIta}</div>
-                    </div>
-                    <div class="request-content">
-                        <p><strong>Nome Discord:</strong> ${request.discordName}</p>
-                        <p><strong>Username Discord:</strong> ${request.discordUsername}</p>
-                        <p><strong>ID Discord:</strong> ${request.discordId}</p>
-                        <p><strong>Motivo ban:</strong> ${request.banReason.substring(0, 100)}${request.banReason.length > 100 ? '...' : ''}</p>
-                        <p><strong>Motivo unban:</strong> ${request.unbanReason.substring(0, 100)}${request.unbanReason.length > 100 ? '...' : ''}</p>
-                        <p><strong>Data invio:</strong> ${new Date(request.timestamp).toLocaleString()}</p>
-                        ${request.adminNote ? '<p><strong>Nota amministratore:</strong> ' + request.adminNote + '</p>' : ''}
-                        <div class="request-actions">
-                            <button class="action-btn approve-btn" onclick="openApproveModal('${key}')">Approva</button>
-                            <button class="action-btn reject-btn" onclick="openRejectModal('${key}')">Rifiuta</button>
-                            <button class="action-btn delete-btn" onclick="deleteRequest('${key}')">Elimina</button>
-                        </div>
-                    </div>
-                `;
-                
-                requestsList.appendChild(requestElement);
+            })
+            .catch(error => {
+                console.error('Errore durante il login:', error);
+                alert('Errore durante il login. Riprova più tardi.');
             });
         }
         
-        // Funzione aggiornata per gestire le motivazioni
-        async function updateRequestStatusWithReason(requestKey, status, adminNote) {
+        // Funzione per caricare le richieste dal backend
+        function loadRequests() {
+            const token = localStorage.getItem('adminToken');
+            if (!token) {
+                alert('Devi effettuare il login per accedere a questa funzione.');
+                document.getElementById('loginSection').style.display = 'block';
+                document.getElementById('adminPanel').style.display = 'none';
+                return;
+            }
+            
+            // Ottieni parametri di ricerca e filtro
+            const searchTerm = document.getElementById('searchInput')?.value || '';
+            const statusFilter = document.getElementById('statusFilter')?.value || '';
+            
+            let url = `/api/unban-requests`;
+            const params = [];
+            if (searchTerm) params.push(`search=${encodeURIComponent(searchTerm)}`);
+            if (statusFilter) params.push(`status=${encodeURIComponent(statusFilter)}`);
+            
+            if (params.length > 0) {
+                url += '?' + params.join('&');
+            }
+            
+            fetch(url, {
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                }
+            })
+            .then(response => {
+                if (response.status === 401 || response.status === 403) {
+                    alert('Sessione scaduta. Effettua nuovamente il login.');
+                    document.getElementById('loginSection').style.display = 'block';
+                    document.getElementById('adminPanel').style.display = 'none';
+                    localStorage.removeItem('adminToken');
+                    return;
+                }
+                return response.json();
+            })
+            .then(requests => {
+                const requestsList = document.getElementById('requestsList');
+                requestsList.innerHTML = '';
+                
+                if (requests.length === 0) {
+                    requestsList.innerHTML = '<p>Nessuna richiesta trovata.</p>';
+                    return;
+                }
+                
+                // Carica e mostra tutte le richieste
+                requests.forEach(request => {
+                    const requestElement = document.createElement('div');
+                    requestElement.className = 'request-item';
+                    
+                    // Converti lo stato in italiano
+                    let statoIta = '';
+                    if(request.status === 'approved') {
+                        statoIta = 'Approvata';
+                    } else if(request.status === 'rejected') {
+                        statoIta = 'Rifiutata';
+                    } else if(request.status === 'pending') {
+                        statoIta = 'In attesa di risposta';
+                    } else {
+                        statoIta = request.status ? request.status.charAt(0).toUpperCase() + request.status.slice(1) : 'In attesa di revisione';
+                    }
+                    
+                    // Tronca i motivi se sono troppo lunghi
+                    const truncatedBanReason = request.ban_reason.length > 100 ? 
+                        request.ban_reason.substring(0, 100) + '...' : 
+                        request.ban_reason;
+                    
+                    const truncatedUnbanReason = request.unban_reason.length > 100 ? 
+                        request.unban_reason.substring(0, 100) + '...' : 
+                        request.unban_reason;
+                    
+                    requestElement.innerHTML = `
+                        <div class="request-header">
+                            <h4>Richiesta per ID: ${request.discord_id}</h4>
+                            <div class="request-status">${statoIta}</div>
+                        </div>
+                        <div class="request-content">
+                            <p><strong>Nome Discord:</strong> ${request.discord_name}</p>
+                            <p><strong>Username Discord:</strong> ${request.discord_username}</p>
+                            <p><strong>ID Discord:</strong> ${request.discord_id}</p>
+                            <p><strong>Motivo ban:</strong> ${truncatedBanReason}</p>
+                            <p><strong>Motivo unban:</strong> ${truncatedUnbanReason}</p>
+                            <p><strong>Data invio:</strong> ${new Date(request.created_at).toLocaleString()}</p>
+                            ${request.admin_note ? '<p><strong>Nota amministratore:</strong> ' + request.admin_note + '</p>' : ''}
+                            <div class="request-actions">
+                                <button class="action-btn approve-btn" onclick="openApproveModal('${request.discord_id}')">Approva</button>
+                                <button class="action-btn reject-btn" onclick="openRejectModal('${request.discord_id}')">Rifiuta</button>
+                                <button class="action-btn delete-btn" onclick="deleteRequest('${request.discord_id}')">Elimina</button>
+                            </div>
+                        </div>
+                    `;
+                    
+                    requestsList.appendChild(requestElement);
+                });
+            })
+            .catch(error => {
+                console.error('Errore nel caricamento delle richieste:', error);
+                document.getElementById('requestsList').innerHTML = '<p>Errore nel caricamento delle richieste. Riprova più tardi.</p>';
+            });
+        }
+        
+        // Funzione per aggiornare lo stato di una richiesta
+        async function updateRequestStatusWithReason(discordId, status, adminNote) {
+            const token = localStorage.getItem('adminToken');
+            if (!token) {
+                alert('Sessione scaduta. Effettua nuovamente il login.');
+                return;
+            }
+            
             try {
-                // In produzione, questa sarebbe una chiamata API sicura
-                const response = await fetch(`/api/update-request/${requestKey.replace('unbanRequest_', '')}`, {
+                const response = await fetch(`/api/unban-requests/${discordId}/status`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + localStorage.getItem('adminToken')
+                        'Authorization': 'Bearer ' + token
                     },
                     body: JSON.stringify({ 
                         status: status,
@@ -272,66 +335,58 @@
                 });
                 
                 if (response.ok) {
-                    // Versione demo: aggiorna direttamente in localStorage
-                    const request = JSON.parse(localStorage.getItem(requestKey));
-                    request.status = status;
-                    if (adminNote) request.adminNote = adminNote;
-                    request.statusUpdate = new Date().toISOString();
-                    localStorage.setItem(requestKey, JSON.stringify(request));
-                    
                     loadRequests(); // Ricarica la lista
+                } else if (response.status === 401 || response.status === 403) {
+                    alert('Sessione scaduta. Effettua nuovamente il login.');
+                    document.getElementById('loginSection').style.display = 'block';
+                    document.getElementById('adminPanel').style.display = 'none';
+                    localStorage.removeItem('adminToken');
                 } else {
                     throw new Error('Errore nell\'aggiornamento della richiesta');
                 }
             } catch (error) {
-                // In questa versione demo, aggiorniamo direttamente in localStorage
-                const request = JSON.parse(localStorage.getItem(requestKey));
-                request.status = status;
-                if (adminNote) request.adminNote = adminNote;
-                request.statusUpdate = new Date().toISOString();
-                localStorage.setItem(requestKey, JSON.stringify(request));
-                
-                loadRequests(); // Ricarica la lista
-                console.log('Aggiornamento stato con motivazione (versione demo):', error);
+                console.error('Errore nell\'aggiornamento della richiesta:', error);
+                alert('Errore nell\'aggiornamento della richiesta. Riprova più tardi.');
             }
         }
         
-        async function deleteRequest(requestKey) {
+        // Funzione per eliminare una richiesta
+        async function deleteRequest(discordId) {
             if (confirm('Sei sicuro di voler eliminare questa richiesta?')) {
+                const token = localStorage.getItem('adminToken');
+                if (!token) {
+                    alert('Sessione scaduta. Effettua nuovamente il login.');
+                    return;
+                }
+                
                 try {
-                    // In produzione, questa sarebbe una chiamata API sicura
-                    const response = await fetch(`/api/delete-request/${requestKey.replace('unbanRequest_', '')}`, {
+                    const response = await fetch(`/api/unban-requests/${discordId}`, {
                         method: 'DELETE',
                         headers: {
-                            'Authorization': 'Bearer ' + localStorage.getItem('adminToken')
+                            'Authorization': 'Bearer ' + token
                         }
                     });
                     
                     if (response.ok) {
-                        localStorage.removeItem(requestKey);
                         loadRequests();
+                    } else if (response.status === 401 || response.status === 403) {
+                        alert('Sessione scaduta. Effettua nuovamente il login.');
+                        document.getElementById('loginSection').style.display = 'block';
+                        document.getElementById('adminPanel').style.display = 'none';
+                        localStorage.removeItem('adminToken');
                     } else {
                         throw new Error('Errore nell\'eliminazione della richiesta');
                     }
                 } catch (error) {
-                    // In questa versione demo, eliminiamo direttamente da localStorage
-                    localStorage.removeItem(requestKey);
-                    loadRequests();
-                    console.log('Eliminazione richiesta (versione demo):', error);
+                    console.error('Errore nell\'eliminazione della richiesta:', error);
+                    alert('Errore nell\'eliminazione della richiesta. Riprova più tardi.');
                 }
             }
         }
         
         function filterRequests() {
-            // In una vera implementazione, questa funzione filtrerebbe le richieste
-            // tramite una chiamata API al backend
+            // Questa funzione ora chiama loadRequests che gestisce i filtri
             loadRequests();
-            
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const statusFilter = document.getElementById('statusFilter').value;
-            
-            // Nella simulazione attuale, mostriamo tutte le richieste
-            // In un sistema reale, qui applicheremmo i filtri tramite API
         }
         
         // Premere Enter nel campo password attiva il login
