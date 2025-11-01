@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Richiesta Inviata - Server Discord Hashira</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Particelle di sfondo -->
+    <div id="particles-js"></div>
+
+    <!-- Wrapper principale -->
+    <div class="main-content">
+        <!-- Header Fisso -->
+        <header class="header">
+            <div>
+                <div class="logo">Hashira</div>
+            </div>
+            <div>
+                <button class="home-btn" onclick="location.href='home.html'">home</button>
+                <button class="regolamento-btn" onclick="location.href='regolamento.html'">regolamento</button>
+                <button class="info-btn" onclick="location.href='info.html'">info</button>
+            </div>
+        </header>
+
+        <div class="container">
+            <main>
+                <section class="confirmation-section">
+                    <div class="title-container">
+                        <h2 id="typewriter-title" class="shimmer-text centered-title success-title">Richiesta Inviata con Successo!</h2>
+                    </div>
+                    <div class="confirmation-message">
+                        <p id="typewriter-text" class="typewriter-text message-text"></p>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© Server Discord Hashira — Tutti i diritti riservati.</p>
+        <p>Sito e bot sviluppati da Samu™</p>
+    </footer>
+
+    <!-- Script per particelle -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // Testo da mostrare con effetto typewriter
+        const titleText = "Richiesta Inviata con Successo!";
+        const fullText = "Hai inviato con successo la richiesta di unban.\nAttendi una risposta da parte dello staff: se l’unban verrà accettato, un membro dello staff di Hashira ti contatterà.\nIn caso di rifiuto, non riceverai alcuna comunicazione.";
+        
+        // Funzione per effetto typewriter
+        function typewriterEffect(element, text, speed = 50) {
+            let i = 0;
+            element.innerHTML = '';
+            
+            function type() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                }
+            }
+            
+            type();
+        }
+        
+        // Inizializzazione quando il documento è pronto
+        document.addEventListener('DOMContentLoaded', function() {
+            const typewriterTitleElement = document.getElementById('typewriter-title');
+            const typewriterElement = document.getElementById('typewriter-text');
+            
+            // Mostra prima il titolo, poi il testo principale
+            typewriterEffect(typewriterTitleElement, titleText, 60); // Velocità leggermente più lenta per il titolo
+            
+            // Dopo che il titolo è completo, inizia il testo principale
+            setTimeout(() => {
+                typewriterEffect(typewriterElement, fullText, 40); // Velocità di 40ms per carattere per il testo principale
+            }, titleText.length * 60 + 1000); // Aspetta la fine del titolo + un secondo
+        });
+        
+        // Inizializzazione di Particles.js
+        particlesJS("particles-js", {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: "#8e2de2" },
+                shape: { type: "circle" },
+                opacity: { value: 0.5, random: true },
+                size: { value: 3, random: true },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: "#4a00e0",
+                    opacity: 0.4,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 2,
+                    direction: "none",
+                    random: true,
+                    straight: false,
+                    out_mode: "out",
+                    bounce: false
+                }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: { enable: true, mode: "grab" },
+                    onclick: { enable: true, mode: "grab" },
+                    resize: true
+                },
+                modes: {
+                    grab: {
+                        distance: 150,
+                        line_linked: {
+                            opacity: 1
+                        }
+                    },
+                    bubble: {
+                        distance: 200,
+                        size: 8,
+                        duration: 0.3
+                    },
+                    repulse: {
+                        distance: 100,
+                        duration: 0.4
+                    }
+                }
+            },
+            retina_detect: true
+        });
+    </script>
+    
+    <style>
+        .success-title {
+            font-size: 2.8em;
+            margin: 0 0 40px 0;
+            color: #4ade80;
+            text-shadow: 0 0 10px rgba(74, 222, 128, 0.7);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        
+        .message-text {
+            font-size: 1.3em;
+            line-height: 1.7;
+            color: #e2e8f0;
+            white-space: pre-wrap;
+            margin: 0;
+        }
+        
+        .confirmation-section {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: calc(100vh - 120px);
+            padding: 20px;
+            position: relative;
+        }
+        
+        .title-container {
+            text-align: center;
+            margin-bottom: 40px;
+            z-index: 10;
+        }
+        
+        .centered-title {
+            text-align: center;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .confirmation-message {
+            max-width: 800px;
+            text-align: center;
+            background: rgba(30, 41, 59, 0.7);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 
+                0 0 30px rgba(74, 222, 128, 0.3),
+                inset 0 0 20px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(74, 222, 128, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .confirmation-message::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #8b5cf6, #ec4899, #f43f5e, #f59e0b, #8b5cf6);
+            background-size: 400% 400%;
+            border-radius: 22px;
+            z-index: -1;
+            animation: gradientShift 8s ease infinite;
+        }
+        
+        .confirmation-message::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: inherit;
+            border-radius: 20px;
+            z-index: -1;
+            filter: blur(15px);
+            opacity: 0.5;
+        }
+        
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 5px rgba(74, 222, 128, 0.5), 0 0 10px rgba(74, 222, 128, 0.5);
+            }
+            to {
+                text-shadow: 0 0 15px rgba(74, 222, 128, 0.8), 0 0 20px rgba(74, 222, 128, 0.8), 0 0 30px rgba(74, 222, 128, 0.6);
+            }
+        }
+        
+        @keyframes gradientShift {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+        
+        .confirmation-section h2 {
+            margin-bottom: 0;
+            font-size: 2.2em;
+        }
+        
+        /* Effetto pulsante per il testo */
+        .typewriter-text {
+            position: relative;
+        }
+        
+        .typewriter-text::after {
+            content: "|";
+            position: absolute;
+            right: -5px;
+            animation: blink 1s infinite;
+            color: #4ade80;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+    </style>
+</body>
+</html>

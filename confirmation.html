@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Richiesta Inviata - Server Discord Hashira</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Particelle di sfondo -->
+    <div id="particles-js"></div>
+
+    <!-- Wrapper principale -->
+    <div class="main-content">
+        <!-- Header Fisso -->
+        <header class="header">
+            <div>
+                <div class="logo">Hashira</div>
+            </div>
+            <div>
+                <button class="home-btn" onclick="location.href='home.html'">home</button>
+                <button class="regolamento-btn" onclick="location.href='regolamento.html'">regolamento</button>
+                <button class="info-btn" onclick="location.href='info.html'">info</button>
+            </div>
+        </header>
+
+        <div class="container">
+            <main>
+                <section class="confirmation-section">
+                    <h2>Richiesta Inviata con Successo!</h2>
+                    <div class="confirmation-message">
+                        <p>La tua richiesta di unban è stata inviata correttamente.</p>
+                        <p>Il team di moderazione del server esaminerà la tua richiesta e ti risponderà nel canale appropriato.</p>
+                        <p>Ricorda di rispettare le regole del server se verrai riammesso.</p>
+                        <p><strong>Nota:</strong> Abbiamo notato che fornisci informazioni accurate. Se avessi fornito informazioni false, la richiesta sarebbe stata eliminata automaticamente dal bot.</p>
+                        <p><strong>Attenzione:</strong> Non puoi inviare un'altra richiesta finché questa non sarà stata esaminata. Puoi controllare lo stato della tua richiesta entro 24 ore usando il pulsante qui sotto.</p>
+                    </div>
+                    
+                    <div class="form-summary">
+                        <h3>Riepilogo della tua richiesta:</h3>
+                        <p><strong>Nome Discord:</strong> <span id="summary-discordName"></span></p>
+                        <p><strong>Username Discord:</strong> <span id="summary-discordUsername"></span></p>
+                        <p><strong>ID Discord:</strong> <span id="summary-discordId"></span></p>
+                        <p><strong>Perché sei stato bannato:</strong> <span id="summary-banReason"></span></p>
+                        <p><strong>Perché vuoi tornare:</strong> <span id="summary-unbanReason"></span></p>
+                    </div>
+                    
+                    <div class="cta-container">
+                        <a href="home.html" class="btn-primary">Torna alla Home</a>
+                        <a href="home.html" class="btn-secondary">Torna alla Home</a>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© Server Discord Hashira — Tutti i diritti riservati.</p>
+        <p>Sito e bot sviluppati da Samu™</p>
+    </footer>
+
+    <!-- Script per particelle -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // Inizializzazione di Particles.js
+        particlesJS("particles-js", {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: "#8e2de2" },
+                shape: { type: "circle" },
+                opacity: { value: 0.5, random: true },
+                size: { value: 3, random: true },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: "#4a00e0",
+                    opacity: 0.4,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 2,
+                    direction: "none",
+                    random: true,
+                    straight: false,
+                    out_mode: "out",
+                    bounce: false
+                }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: { enable: true, mode: "grab" },
+                    onclick: { enable: true, mode: "push" },
+                    resize: true
+                }
+            },
+            retina_detect: true
+        });
+        
+        // Funzione per tornare alla home
+        document.querySelector('.home-btn').addEventListener('click', function() {
+            window.location.href = 'home.html';
+        });
+        
+        // Recupero i dati della richiesta
+        document.addEventListener('DOMContentLoaded', function() {
+            const requestCode = localStorage.getItem('requestCode');
+            const requestInfo = requestCode ? JSON.parse(localStorage.getItem('unbanRequest_' + requestCode)) : null;
+            
+            if (requestInfo) {
+                // Visualizzo i dati nella pagina di conferma
+                document.getElementById('summary-discordName').textContent = requestInfo.discordName;
+                document.getElementById('summary-discordUsername').textContent = requestInfo.discordUsername;
+                document.getElementById('summary-discordId').textContent = requestInfo.discordId;
+                document.getElementById('summary-banReason').textContent = requestInfo.banReason;
+                document.getElementById('summary-unbanReason').textContent = requestInfo.unbanReason;
+                
+                // Aggiungi informazioni sullo stato richiesta
+                const statusInfoDiv = document.createElement('div');
+                statusInfoDiv.className = 'request-code-info';
+                statusInfoDiv.innerHTML = `<p><strong>Puoi controllare lo stato della tua richiesta usando il tuo ID Discord.</strong> Usa il pulsante qui sotto o vai alla pagina "Controlla Stato Richiesta" e inserisci il tuo ID Discord.</p>`;
+                
+                document.querySelector('.confirmation-message').appendChild(statusInfoDiv);
+            } else {
+                // Se non ci sono dati, mostro un messaggio di errore
+                document.querySelector('.confirmation-message').innerHTML = '<p>Errore: Nessuna richiesta trovata. Torna alla pagina principale per inviare una nuova richiesta.</p>';
+            }
+            
+            // Rimuovo il codice richiesta dal localStorage dopo averlo utilizzato
+            localStorage.removeItem('requestCode');
+        });
+    </script>
+</body>
+</html>

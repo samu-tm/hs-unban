@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pannello di Amministrazione - Server Discord Hashira</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Particelle di sfondo -->
+    <div id="particles-js"></div>
+
+    <!-- Wrapper principale -->
+    <div class="main-content">
+        <!-- Header Fisso -->
+        <header class="header">
+            <div>
+                <div class="logo">Hashira</div>
+            </div>
+            <div>
+                <button class="home-btn" onclick="location.href='home.html'">home</button>
+                <button class="regolamento-btn" onclick="location.href='regolamento.html'">regolamento</button>
+                <button class="info-btn" onclick="location.href='info.html'">info</button>
+            </div>
+        </header>
+
+        <div class="container">
+            <main>
+                <section id="maintenanceSection" style="text-align: center; padding: 50px 20px;">
+                    <h2>Sito Temporaneamente Disattivato</h2>
+                    <p style="font-size: 18px; margin: 20px 0;">Questo sito è stato temporaneamente disattivato dallo sviluppatore per manutenzione.</p>
+                    <p style="font-size: 16px; margin: 10px 0;">Ripristineremo le funzionalità al più presto.</p>
+                    <p style="font-size: 16px; margin: 10px 0;">Grazie per la comprensione.</p>
+                </section>
+                
+                <!-- Sezione admin nascosta -->
+                <section id="adminPanel" style="display: none;">
+                    <h2>Gestione Richieste Unban</h2>
+                    
+                    <div class="admin-controls">
+                        <div class="search-filter">
+                            <input type="text" id="searchInput" placeholder="Cerca per nome o ID utente..." oninput="filterRequests()">
+                            <select id="statusFilter" onchange="filterRequests()">
+                                <option value="">Tutti gli stati</option>
+                                <option value="pending">In attesa</option>
+                                <option value="approved">Approvate</option>
+                                <option value="rejected">Rifiutate</option>
+                            </select>
+                        </div>
+                        
+                        <div class="requests-list" id="requestsList">
+                            <!-- Le richieste verranno caricate qui -->
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modale per approvazione -->
+    <div id="approveModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('approveModal')">&times;</span>
+            <h3>Approva Richiesta</h3>
+            <p>Aggiungi una nota per l'utente (opzionale):</p>
+            <textarea id="approveReason" placeholder="Motivazione approvazione..."></textarea>
+            <div class="modal-actions">
+                <button class="action-btn approve-btn" onclick="confirmApprove()">Approva</button>
+                <button class="action-btn" onclick="closeModal('approveModal')">Annulla</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modale per rifiuto -->
+    <div id="rejectModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('rejectModal')">&times;</span>
+            <h3>Rifiuta Richiesta</h3>
+            <p>Aggiungi una nota per l'utente (obbligatoria):</p>
+            <textarea id="rejectReason" placeholder="Motivazione rifiuto..."></textarea>
+            <div class="modal-actions">
+                <button class="action-btn reject-btn" onclick="confirmReject()">Rifiuta</button>
+                <button class="action-btn" onclick="closeModal('rejectModal')">Annulla</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© Server Discord Hashira — Tutti i diritti riservati.</p>
+        <p>Sito e bot sviluppati da Samu™</p>
+    </footer>
+
+    <!-- Script per particelle -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // Inizializzazione di Particles.js
+        particlesJS("particles-js", {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: "#8e2de2" },
+                shape: { type: "circle" },
+                opacity: { value: 0.5, random: true },
+                size: { value: 3, random: true },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: "#4a00e0",
+                    opacity: 0.4,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 2,
+                    direction: "none",
+                    random: true,
+                    straight: false,
+                    out_mode: "out",
+                    bounce: false
+                }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: { enable: true, mode: "grab" },
+                    onclick: { enable: true, mode: "push" },
+                    resize: true
+                }
+            },
+            retina_detect: true
+        });
+        
+        // Funzioni per aprire e chiudere le modali
+        function openApproveModal(key) {
+            document.getElementById('approveModal').style.display = 'block';
+        }
+        
+        function openRejectModal(key) {
+            document.getElementById('rejectModal').style.display = 'block';
+        }
+        
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+    </script>
+    
+    <style>
+        /* Stile per le modali */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        
+        .modal-content {
+            background-color: rgba(30, 30, 40, 0.95);
+            margin: 15% auto;
+            padding: 20px;
+            border: none;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 500px;
+            backdrop-filter: blur(10px);
+            color: white;
+            position: relative;
+        }
+        
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            position: absolute;
+            right: 15px;
+            top: 10px;
+        }
+        
+        .close:hover,
+        .close:focus {
+            color: #fff;
+        }
+        
+        textarea#approveReason,
+        textarea#rejectReason {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #4a00e0;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            min-height: 100px;
+            margin: 10px 0 20px 0;
+        }
+        
+        .modal-actions {
+            display: flex;
+            justify-content: space-around;
+            gap: 10px;
+        }
+    </style>
+</body>
+</html>

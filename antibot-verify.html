@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verifica Antibot</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+        
+        .container {
+            max-width: 600px;
+            padding: 20px;
+        }
+        
+        .main-text {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .sub-text {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(0,0,0,.2);
+            border-radius: 50%;
+            border-top-color: rgba(0,0,0,.5);
+            animation: spin 1s ease-in-out infinite;
+            margin-left: 10px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="main-text">Stiamo verificando la tua connessione, attendi... <span class="loading"></span></div>
+        <div class="sub-text">verifica antibot</div>
+    </div>
+    
+    <script>
+        // Imposta il flag di verifica e reindirizza alla pagina home dopo 7 secondi
+        setTimeout(function() {
+            localStorage.setItem('antibot_verified', 'true');
+            window.location.href = 'home.html';
+        }, 7000);
+    </script>
+</body>
+</html>

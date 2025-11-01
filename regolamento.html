@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regolamento - Server Discord Hashira</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Particelle di sfondo -->
+    <div id="particles-js"></div>
+
+    <!-- Wrapper principale -->
+    <div class="main-content">
+        <!-- Header Fisso -->
+        <header class="header">
+            <div>
+                <div class="logo">Hashira</div>
+            </div>
+            <div>
+                <button class="home-btn" onclick="location.href='home.html'">home</button>
+                <button class="regolamento-btn" onclick="location.href='regolamento.html'">regolamento</button>
+                <button class="info-btn" onclick="location.href='info.html'">info</button>
+            </div>
+        </header>
+
+        <div class="container">
+            <main>
+                <section class="regolamento-section">
+                    <h2>🌟 Regolamento della Community</h2>
+                    
+                    <div class="regolamento-content">
+                        <p>Benvenuto/a! Per garantire un ambiente sereno, inclusivo e piacevole per tutti, ti chiediamo di rispettare le seguenti regole fondamentali:</p>
+                        
+                        <h3>🤝 Rispetto per tutti</h3>
+                        <p>Tratta ogni membro della community con cortesia e rispetto. Non sono tollerati insulti, provocazioni, molestie, discriminazioni, bullismo o incitamenti all'odio. Un atteggiamento gentile è sempre la scelta migliore.</p>
+                        
+                        <h3>🚫 Niente spam o flood</h3>
+                        <p>Evita messaggi ripetitivi, uso eccessivo di emoji, ping multipli o contenuti non pertinenti. Mantieni la conversazione chiara e piacevole per tutti.</p>
+                        <p>Evitate di inviare dox o altre cose non pertinenti alla community</p>
+                        
+                        <h3>🔞 Contenuti appropriati</h3>
+                        <p>È vietata la condivisione di materiali NSFW (non sicuri per il lavoro), contenuti violenti, offensivi o inappropriati, inclusi immagini, video, link o messaggi.</p>
+                        
+                        <h3>🗂️ Uso corretto dei canali</h3>
+                        <p>Ogni canale ha uno scopo preciso. Per favore, rispetta le categorie e posta i tuoi messaggi nel canale più adatto all'argomento.</p>
+                        
+                        <h3>📢 Niente pubblicità non autorizzata</h3>
+                        <p>La promozione di server, prodotti, link o altri contenuti esterni è consentita solo con il permesso esplicito dello staff.</p>
+                        
+                        <h3>🌈 Comportamento positivo</h3>
+                        <p>Evita atteggiamenti tossici, provocatori o polemici. Coltiviamo insieme un ambiente accogliente, dove tutti possano sentirsi a proprio agio.</p>
+                        
+                        <h3>🛡️ Rispetta lo staff</h3>
+                        <p>Lo staff è qui per aiutare e mantenere l'ordine nella community. Segui le loro indicazioni con rispetto e, se hai dubbi o problemi, non contattali in privato ma aprendo un ticket per avere maggior aiuto.</p>
+                        <p>Inoltre è vietato personificare un membro dello staff.</p>
+                        
+                        <h3>🔐 Sicurezza e tutela di tutti</h3>
+                        <p>Sono vietati minacce, ricatti, pressioni o comportamenti intimidatori, sia nei confronti dei membri che dello staff. La sicurezza è una priorità.</p>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© Server Discord Hashira — Tutti i diritti riservati.</p>
+        <p>Sito e bot sviluppati da Samu™</p>
+    </footer>
+
+    <!-- Script per particelle -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // Inizializzazione di Particles.js
+        particlesJS("particles-js", {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: "#8e2de2" },
+                shape: { type: "circle" },
+                opacity: { value: 0.5, random: true },
+                size: { value: 3, random: true },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: "#4a00e0",
+                    opacity: 0.4,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 2,
+                    direction: "none",
+                    random: true,
+                    straight: false,
+                    out_mode: "out",
+                    bounce: false
+                }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: { enable: true, mode: "grab" },
+                    onclick: { enable: true, mode: "push" },
+                    resize: true
+                }
+            },
+            retina_detect: true
+        });
+    </script>
+</body>
+</html>

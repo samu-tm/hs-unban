@@ -1,0 +1,475 @@
+/* File di stili aggiuntivo per ulteriori miglioramenti estetici */
+/* Gradienti e animazioni avanzate */
+
+:root {
+    --primary-gradient: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    --success-gradient: linear-gradient(135deg, #06d6a0 0%, #05b48a 100%);
+    --danger-gradient: linear-gradient(135deg, #ef476f 0%, #d63a62 100%);
+    --warning-gradient: linear-gradient(135deg, #ff9a00 0%, #ff6b00 100%);
+    --accent-color: #a166ff;
+    --dark-bg: #0f0f19;
+    --light-text: #f0f0ff;
+    --glass-bg: rgba(15, 15, 25, 0.7);
+}
+
+/* Stile avanzato per pulsanti */
+.advanced-btn {
+    position: relative;
+    overflow: hidden;
+    border: none;
+    padding: 15px 35px;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    z-index: 1;
+    font-family: 'Poppins', sans-serif;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.advanced-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--primary-gradient);
+    z-index: -1;
+    transition: all 0.4s ease;
+}
+
+.advanced-btn:hover::before {
+    transform: scale(1.1);
+}
+
+.advanced-btn span {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.advanced-btn:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 15px 40px rgba(106, 17, 203, 0.6);
+}
+
+.advanced-btn:active {
+    transform: translateY(0) scale(0.98);
+}
+
+/* Effetti speciali per le schede */
+.card-glow {
+    position: relative;
+    overflow: hidden;
+}
+
+.card-glow::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+    background-size: 400%;
+    border-radius: 20px; /* Corrisponde al border-radius dell'elemento principale */
+    z-index: -1;
+    animation: glowing-border 20s linear infinite;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.card-glow:hover::before {
+    opacity: 1;
+}
+
+.card-glow::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: inherit;
+    border-radius: 20px;
+    z-index: -1;
+}
+
+@keyframes glowing-border {
+    0% { background-position: 0 0; }
+    50% { background-position: 400% 0; }
+    100% { background-position: 0 0; }
+}
+
+/* Effetti di testo avanzati */
+.text-glow {
+    text-shadow: 
+        0 0 5px rgba(161, 102, 255, 0.5),
+        0 0 10px rgba(161, 102, 255, 0.4),
+        0 0 15px rgba(161, 102, 255, 0.3);
+}
+
+.text-neon {
+    color: var(--light-text);
+    text-shadow: 
+        0 0 5px #fff,
+        0 0 10px #fff,
+        0 0 15px var(--accent-color),
+        0 0 20px var(--accent-color),
+        0 0 25px var(--accent-color),
+        0 0 30px var(--accent-color);
+    animation: neon-flicker 1.5s infinite alternate;
+}
+
+@keyframes neon-flicker {
+    0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+        text-shadow: 
+            0 0 5px #fff,
+            0 0 10px #fff,
+            0 0 15px var(--accent-color),
+            0 0 20px var(--accent-color),
+            0 0 25px var(--accent-color),
+            0 0 30px var(--accent-color);
+        opacity: 1;
+    }
+    20%, 24%, 55% {
+        text-shadow: none;
+        opacity: 0.8;
+    }
+}
+
+/* Effetti per le immagini e contenuti */
+.image-glow {
+    filter: drop-shadow(0 0 10px rgba(161, 102, 255, 0.5));
+    transition: all 0.4s ease;
+}
+
+.image-glow:hover {
+    filter: drop-shadow(0 0 20px rgba(161, 102, 255, 0.8));
+    transform: scale(1.02);
+}
+
+/* Transizioni avanzate */
+.slide-up {
+    animation: slideUp 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) both;
+}
+
+.slide-down {
+    animation: slideDown 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) both;
+}
+
+.fade-in {
+    animation: fadeIn 1s ease-out both;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Effetti per i form avanzati */
+.form-group-advanced {
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.form-control-advanced {
+    width: 100%;
+    padding: 16px 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(161, 102, 255, 0.3);
+    border-radius: 12px;
+    color: white;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.form-control-advanced:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 
+        0 0 0 2px rgba(161, 102, 255, 0.5),
+        0 0 20px rgba(161, 102, 255, 0.3);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Effetti di focus personalizzati */
+.focus-border {
+    position: relative;
+}
+
+.focus-border::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--accent-color);
+    transition: width 0.3s ease;
+}
+
+.focus-border:focus-within::after {
+    width: 100%;
+}
+
+/* Effetti di hover per i link */
+.link-effect {
+    position: relative;
+    text-decoration: none;
+    color: var(--accent-color);
+}
+
+.link-effect::before {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--accent-color);
+    transition: width 0.3s ease;
+}
+
+.link-effect:hover::before {
+    width: 100%;
+}
+
+.link-effect:hover {
+    color: #6a11cb;
+}
+
+/* Effetti per le liste */
+.list-glow li {
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.list-glow li:last-child {
+    border-bottom: none;
+}
+
+.list-glow li:hover {
+    color: var(--accent-color);
+    padding-left: 10px;
+}
+
+.list-glow li::before {
+    content: '▶';
+    color: var(--accent-color);
+    margin-right: 10px;
+    transition: transform 0.3s ease;
+}
+
+.list-glow li:hover::before {
+    transform: translateX(5px);
+}
+
+/* Effetti per le tabelle (se presenti) */
+.table-glass {
+    background: var(--glass-bg);
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+.table-glass th {
+    background: rgba(161, 102, 255, 0.2);
+    color: white;
+    padding: 15px;
+    text-align: left;
+}
+
+.table-glass td {
+    padding: 12px 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--light-text);
+}
+
+.table-glass tr:last-child td {
+    border-bottom: none;
+}
+
+.table-glass tr:hover {
+    background: rgba(161, 102, 255, 0.1);
+}
+
+/* Effetti per le barre di progresso */
+.progress-bar {
+    height: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 10px 0;
+}
+
+.progress {
+    height: 100%;
+    background: var(--primary-gradient);
+    border-radius: 10px;
+    position: relative;
+    animation: progressAnimation 2s ease-out;
+}
+
+@keyframes progressAnimation {
+    from { width: 0; }
+    to { width: var(--progress-width, 50%); }
+}
+
+/* Effetti per le notifiche */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 25px;
+    border-radius: 10px;
+    color: white;
+    font-weight: bold;
+    z-index: 3000;
+    transform: translateX(120%);
+    transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+.notification.show {
+    transform: translateX(0);
+}
+
+.notification.success {
+    background: var(--success-gradient);
+}
+
+.notification.error {
+    background: var(--danger-gradient);
+}
+
+.notification.warning {
+    background: var(--warning-gradient);
+}
+
+/* Effetti per le ombre avanzate */
+.shadow-soft {
+    box-shadow: 
+        0 5px 15px rgba(0, 0, 0, 0.1),
+        inset 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.shadow-hard {
+    box-shadow: 
+        0 20px 50px rgba(0, 0, 0, 0.3),
+        0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.shadow-glow {
+    box-shadow: 
+        0 0 15px rgba(161, 102, 255, 0.3),
+        0 0 30px rgba(161, 102, 255, 0.2);
+}
+
+/* Effetti per la navigazione */
+.nav-item {
+    position: relative;
+    display: inline-block;
+    margin: 0 10px;
+    padding: 10px 0;
+}
+
+.nav-item::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--accent-color);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.nav-item:hover::after {
+    width: 80%;
+}
+
+/* Effetti per i tooltip */
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted var(--accent-color);
+    cursor: help;
+}
+
+.tooltip .tooltip-text {
+    visibility: hidden;
+    width: 250px;
+    background: var(--glass-bg);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--light-text);
+    text-align: center;
+    border-radius: 10px;
+    padding: 10px;
+    position: absolute;
+    z-index: 1000;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.tooltip:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+
+.tooltip .tooltip-text::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: var(--glass-bg);
+}

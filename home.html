@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Server Discord Hashira</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Particelle di sfondo -->
+    <div id="particles-js"></div>
+
+    <!-- Wrapper principale -->
+    <div class="main-content">
+        <!-- Header Fisso -->
+        <header class="header">
+            <div>
+                <div class="logo">Hashira</div>
+            </div>
+            <div>
+                <button class="regolamento-btn" onclick="location.href='regolamento.html'">regolamento</button>
+                <button class="info-btn" onclick="location.href='info.html'">info</button>
+            </div>
+        </header>
+
+        <!-- Sezione Hero -->
+        <section class="hero">
+            <div class="video-background">
+                <video autoplay muted loop class="hero-video-background">
+                    <source src="https://cdn.discordapp.com/attachments/1433916714600501372/1433929259348394094/logo_HS_animato.mp4?ex=690722f0&is=6905d170&hm=fc89905f5aa3be34dbb34efdf072c954db2f3c1ff8909eb2033cca2814a1bdc4&" type="video/mp4">
+                    Il tuo browser non supporta il video.
+                </video>
+            </div>
+            <div class="hero-content">
+                <h1 id="title" class="shimmer-text">Richiesta Unban Discord</h1>
+                <p id="subtitle">Compila il modulo per richiedere l'unban dal server</p>
+                <p id="description">Se sei stato bannato dal nostro server Discord e desideri richiedere l'unban, compila il modulo qui sotto. Assicurati di fornire informazioni accurate e sincere per aumentare le possibilità che la tua richiesta venga approvata.</p>
+                
+                <div class="button-container">
+                    <button class="main-btn unban-btn hover-effect pulse-glow-effect" onclick="location.href='https://form.zampto.net/?id=278'">Richiedi Unban ora</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© Server Discord Hashira — Tutti i diritti riservati.</p>
+        <p>Sito e bot sviluppati da Samu™</p>
+    </footer>
+
+    <!-- Script per particelle -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // Controllo se l'utente è stato verificato
+        if (!localStorage.getItem('antibot_verified')) {
+            // Se non è stato verificato, reindirizza alla pagina di verifica
+            window.location.href = 'antibot-verify.html';
+        }
+
+        // Inizializzazione di Particles.js
+        particlesJS("particles-js", {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: "#8e2de2" },
+                shape: { type: "circle" },
+                opacity: { value: 0.5, random: true },
+                size: { value: 3, random: true },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: "#4a00e0",
+                    opacity: 0.4,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 2,
+                    direction: "none",
+                    random: true,
+                    straight: false,
+                    out_mode: "out",
+                    bounce: false
+                }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: { enable: true, mode: "grab" },
+                    onclick: { enable: true, mode: "grab" },
+                    resize: true
+                },
+                modes: {
+                    grab: {
+                        distance: 150,
+                        line_linked: {
+                            opacity: 1
+                        }
+                    },
+                    bubble: {
+                        distance: 200,
+                        size: 8,
+                        duration: 0.3
+                    },
+                    repulse: {
+                        distance: 100,
+                        duration: 0.4
+                    }
+                }
+            },
+            retina_detect: true
+        });
+    </script>
+</body>
+</html>
